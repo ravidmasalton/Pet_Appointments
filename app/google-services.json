@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "659339616709",
+    "firebase_url": "https://vet-appointments-default-rtdb.firebaseio.com",
+    "project_id": "vet-appointments",
+    "storage_bucket": "vet-appointments.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659339616709:android:d2669aaf762f60f5f66bac",
+        "android_client_info": {
+          "package_name": "com.example.vetappointment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659339616709-nd5quao84f14sk4rifas5ag8ov4hi7lt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDklJJeEa1T1yBI1FuVcT3TNWTU9MaPpBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659339616709-nd5quao84f14sk4rifas5ag8ov4hi7lt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
