@@ -8,12 +8,13 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_gallery">Vet Appointment</string>
     <string name="menu_slideshow">Slideshow</string>
 
     <string-array name="appointment_options">
         <item> Vaccination  </item>
         <item> Castration </item>
         <item> chip </item>
+        <item> Medical treatment </item>
     </string-array>
 </resources>

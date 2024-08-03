@@ -1,4 +1,4 @@
-package com.example.vetappointment;
+package com.example.vetappointment.Models;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.vetappointment;
+package com.example.vetappointment.Models;
 
 public class Appointment {
 
@@ -9,6 +9,7 @@ public class Appointment {
     private String costumerPhone;
     private String idCustomer;
     private String customerName;
+    private String petType;
 
     public Appointment() {
     }
@@ -83,6 +84,15 @@ public class Appointment {
 
     public Appointment setCustomerName(String customerName) {
         this.customerName = customerName;
+        return this;
+    }
+
+    public String getPetType() {
+        return petType;
+    }
+
+    public Appointment setPetType(String petType) {
+        this.petType = petType;
         return this;
     }
 }

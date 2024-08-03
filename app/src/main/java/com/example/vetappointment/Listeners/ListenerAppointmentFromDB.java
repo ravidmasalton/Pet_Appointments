@@ -1,4 +1,6 @@
-package com.example.vetappointment;
+package com.example.vetappointment.Listeners;
+
+import com.example.vetappointment.Models.Appointment;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,10 @@
-package com.example.vetappointment;
+package com.example.vetappointment.Models;
 
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.vetappointment.Listeners.ListenerAppointmentFromDB;
+import com.example.vetappointment.Listeners.ListenerBlockAppointmentFromDB;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,22 +12,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 
 public class FireBaseManager {
     private static FireBaseManager instance;
-    private FirebaseDatabase dmyDatabase;
-    private DatabaseReference databaseReferenceAppointment; // Appointments
-    private DatabaseReference databaseReferenceUser; // Users
+    private final DatabaseReference databaseReferenceAppointment; // Appointments
+    private final DatabaseReference databaseReferenceUser; // Users
+    private final DatabaseReference databaseReferenceBlockAppointment; // BlockAppointments
 
     // Private constructor to prevent instantiation
     private FireBaseManager() {
 
-        dmyDatabase = FirebaseDatabase.getInstance();
-        databaseReferenceAppointment = FirebaseDatabase.getInstance().getReference("appointments");
-        databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
-        databaseReferenceAppointment.removeValue();
+        FirebaseDatabase dmyDatabase = FirebaseDatabase.getInstance();
+        databaseReferenceAppointment = dmyDatabase.getReference("appointments");
+        databaseReferenceUser = dmyDatabase.getReference("users");
+        databaseReferenceBlockAppointment = dmyDatabase.getReference("blockAppointments");
 
     }
 
@@ -96,6 +95,58 @@ public class FireBaseManager {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+
+
+    public void saveBlockAppointment(BlockAppointment blockAppointment) { // Save block appointment
+        DatabaseReference ref = databaseReferenceBlockAppointment.child(blockAppointment.getBlockDayId());
+        ref.setValue(blockAppointment);
+
+    }
+
+    public void getAllBlockAppointments(ListenerBlockAppointmentFromDB listener) { // Get block appointments
+        ArrayList<BlockAppointment> blockAppointments = new ArrayList<>();
+        databaseReferenceBlockAppointment.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    BlockAppointment blockAppointment = snap.getValue(BlockAppointment.class);
+                    blockAppointments.add(blockAppointment);
+                }
+                listener.onBlockAppointmentLoadSuccess(blockAppointments);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onBlockAppointmentLoadFailed(error.getMessage());
+            }
+        });
+    }
+
+    public void removeBlockAppointment(Appointment appointment) { // Remove block appointment
+        getAllBlockAppointments(new ListenerBlockAppointmentFromDB() {
+            @Override
+            public void onBlockAppointmentLoadSuccess(ArrayList<BlockAppointment> blockAppointment) {
+                for (BlockAppointment blockAppointment1 : blockAppointment) {
+                    if (blockAppointment1.getAppointmentId().equals(appointment.getAppointmentId())) {
+                        DatabaseReference ref = databaseReferenceBlockAppointment.child(blockAppointment1.getBlockDayId());
+                        ref.removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onBlockAppointmentLoadFailed(String message) {
+            }
+        });
+
+
+    }
+
+    public void removeAppointment(Appointment appointment) { // Remove appointment
+        DatabaseReference ref = databaseReferenceAppointment.child(appointment.getAppointmentId());
+        ref.removeValue();
     }
 
 
