@@ -1,15 +1,26 @@
 package com.example.vetappointment.Models;
 
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
-import com.example.vetappointment.Listeners.ListenerAppointmentFromDB;
+import com.example.vetappointment.Listeners.ListenerGetAllAppointmentFromDB;
 import com.example.vetappointment.Listeners.ListenerBlockAppointmentFromDB;
+import com.example.vetappointment.Listeners.ListenerGetAllOnlineAppointmentFromDB;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -19,6 +30,7 @@ public class FireBaseManager {
     private final DatabaseReference databaseReferenceAppointment; // Appointments
     private final DatabaseReference databaseReferenceUser; // Users
     private final DatabaseReference databaseReferenceBlockAppointment; // BlockAppointments
+    private final DatabaseReference databaseReferenceOnlineAppointment ; // OnlineAppointments
 
     // Private constructor to prevent instantiation
     private FireBaseManager() {
@@ -27,6 +39,7 @@ public class FireBaseManager {
         databaseReferenceAppointment = dmyDatabase.getReference("appointments");
         databaseReferenceUser = dmyDatabase.getReference("users");
         databaseReferenceBlockAppointment = dmyDatabase.getReference("blockAppointments");
+        databaseReferenceOnlineAppointment= dmyDatabase.getReference("onlineAppointments");
 
     }
 
@@ -54,7 +67,7 @@ public class FireBaseManager {
         ref.push().setValue(appointmentId);
     }
 
-    public void getAllAppointments(ListenerAppointmentFromDB listener) { // Get all appointments
+    public void getAllAppointments(ListenerGetAllAppointmentFromDB listener) { // Get all appointments
         ArrayList<Appointment> appointments = new ArrayList<>();
         databaseReferenceAppointment.addValueEventListener(new ValueEventListener() {
             @Override
@@ -144,10 +157,111 @@ public class FireBaseManager {
 
     }
 
+    public void removeAppointmentFromUser(String userId, String appointmentId) { // Remove appointment for user
+        DatabaseReference userRef = databaseReferenceUser.child(userId).child("appointments");
+        userRef.orderByValue().equalTo(appointmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) { // onDataChange is called when the data is found
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    childSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle potential error
+            }
+        });
+    }
+
     public void removeAppointment(Appointment appointment) { // Remove appointment
         DatabaseReference ref = databaseReferenceAppointment.child(appointment.getAppointmentId());
         ref.removeValue();
     }
+
+
+
+    public void uploadImage(Uri uri, String userUid,CallBack<String> callback) { // Upload image
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageRef.child("USERS").child(userUid + ".jpg");
+
+        if(uri==null){
+            callback.res("");
+            return;
+        }
+        UploadTask uploadTask = imageRef.putFile(uri);
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                callback.res("");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                imageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        String imageUrl = task.getResult().toString();
+                        callback.res(imageUrl);
+                    }
+                });
+            }
+        });
+
+
+
+    }
+
+    public void saveOnlineAppointment(OnlineAppointment onlineAppointment,Uri uri) { // Save online appointment
+
+
+            uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
+                @Override
+                public void res(String res) {
+                    onlineAppointment.setImageUrl(res);
+                    DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
+                    ref.setValue(onlineAppointment);
+                    saveOnlineAppointmentForUser(onlineAppointment.getUserId(),onlineAppointment.getOnlineAppointmentId());
+                }
+            });
+
+
+
+
+
+    }
+
+
+
+
+
+    public void getAllOnlineAppointments(ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments
+        ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
+        databaseReferenceOnlineAppointment.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    OnlineAppointment onlineAppointment = snap.getValue(OnlineAppointment.class);
+                    onlineAppointments.add(onlineAppointment);
+                }
+                listener.onOnlineAppointmentFromDBLoadSuccess(onlineAppointments);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onOnlineAppointmentFromDBLoadFailed(error.getMessage());
+            }
+        });
+    }
+
+
+    public void saveOnlineAppointmentForUser(String  userId, String onlineAppointmentId) { // Save online appointment for user
+        DatabaseReference ref = databaseReferenceUser.child(userId).child("onlineAppointments");
+        ref.push().setValue(onlineAppointmentId);
+    }
+
 
 
 

@@ -10,6 +10,7 @@ public class User {
     private String phone;
     private List<String> appointments;
     private boolean isDoctor;
+    private List<String> MessagesToDoctor;
 
 
     public User() {}
@@ -71,4 +72,21 @@ public class User {
         return this;
     }
 
+    public List<String> getMessagesToDoctor() {
+        return MessagesToDoctor;
+    }
+
+    public boolean isDoctor() {
+        return isDoctor;
+    }
+
+    public User setDoctor(boolean doctor) {
+        isDoctor = doctor;
+        return this;
+    }
+
+    public User setMessagesToDoctor(List<String> messagesToDoctor) {
+        MessagesToDoctor = messagesToDoctor;
+        return this;
+    }
 }

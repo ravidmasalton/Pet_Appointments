@@ -9,7 +9,10 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Vet Appointment</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_slideshow">My Appointments </string>
+    <string name="menu_onlineVet">Online Vet</string>
+    <string name="menu_myMessages">My Messages</string>
+
 
     <string-array name="appointment_options">
         <item> Vaccination  </item>

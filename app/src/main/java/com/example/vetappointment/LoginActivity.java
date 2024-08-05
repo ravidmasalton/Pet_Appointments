@@ -209,7 +209,8 @@ public class LoginActivity extends AppCompatActivity {
                 .setName(name)
                 .setPhone(phone)
                 .setAppointments(null)
-                .setIsDoctor(false);
+                .setIsDoctor(false).
+                setMessagesToDoctor(null);
 
         userRef.child(user.getUid()).setValue(newuser) //save user details to the database
                 .addOnCompleteListener(task -> {

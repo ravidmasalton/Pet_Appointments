@@ -10,11 +10,22 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/add_square_svgrepo_com"
             android:title="@string/menu_gallery" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/calendar_user_svgrepo_com"
             android:title="@string/menu_slideshow" />
+
+        <item
+            android:id="@+id/nav_onlineVet"
+            android:icon="@drawable/online_class_svgrepo_com"
+            android:title="@string/menu_onlineVet" />
+
+
+        <item
+            android:id="@+id/nev_myMessages"
+            android:icon="@drawable/baseline_message_24"
+            android:title="@string/menu_myMessages" />
     </group>
 </menu>

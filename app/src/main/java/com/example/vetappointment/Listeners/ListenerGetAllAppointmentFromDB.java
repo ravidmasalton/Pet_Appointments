@@ -4,7 +4,7 @@ import com.example.vetappointment.Models.Appointment;
 
 import java.util.ArrayList;
 
-public interface ListenerAppointmentFromDB {
+public interface ListenerGetAllAppointmentFromDB {
     void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments);
     void onAppointmentFromDBLoadFailed(String message);
 }

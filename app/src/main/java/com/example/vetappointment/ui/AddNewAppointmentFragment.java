@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.vetappointment.Listeners.ListenerGetAllAppointmentFromDB;
 import com.example.vetappointment.Models.Appointment;
 import com.example.vetappointment.Models.BlockAppointment;
-import com.example.vetappointment.Listeners.ListenerBlockAppointmentFromDB;
 import com.example.vetappointment.MainActivity;
 import com.example.vetappointment.Models.User;
+import com.example.vetappointment.databinding.FragmentAddNewAppointmentBinding;
 import com.google.firebase.auth.FirebaseUser;
 import com.wdullaer.materialdatetimepicker.time.Timepoint;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -26,14 +27,13 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.vetappointment.Models.FireBaseManager;
-import com.example.vetappointment.databinding.FragmentGalleryBinding;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class PickAppointmentFragment extends Fragment {
+public class AddNewAppointmentFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentAddNewAppointmentBinding binding;
 
     private TextInputEditText petTypeEditText;
     private TextInputEditText appointmentDateEditText;
@@ -41,7 +41,7 @@ public class PickAppointmentFragment extends Fragment {
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private Spinner optionsSpinner;
-    private ArrayList<BlockAppointment> blockAppointments = new ArrayList<>();
+    private ArrayList<Appointment> allAppointments = new ArrayList<>();
     private MaterialButton confirmButton;
     private FirebaseAuth auth;
     FireBaseManager fireBaseManager = FireBaseManager.getInstance();
@@ -50,18 +50,18 @@ public class PickAppointmentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentAddNewAppointmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         findViews();
         auth = FirebaseAuth.getInstance();
-        getAllBlockAppointments(); // Ensure blockAppointments is populated
-        initDatePicker();
+        getAllAppointments(); // Get all appointments from the database
+        initDatePickerAndTime();
         confirmButton.setOnClickListener(v -> confirmAppointment());
 
         return root;
     }
 
-    private void initDatePicker() {
+    private void initDatePickerAndTime() {
         appointmentDateEditText.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -75,7 +75,9 @@ public class PickAppointmentFragment extends Fragment {
                 appointmentDateEditText.setText(selectedDate);
                 // Clear the previously selected time and show the time picker again
                 appointmentTimeEditText.setText("");
+
                 initTimePicker(selectedDate); // Initialize time picker based on selected date
+
             }, year, month, day);
 
             // Set the minimum date to today
@@ -103,7 +105,6 @@ public class PickAppointmentFragment extends Fragment {
 
             timePickerDialog.setMinTime(8, 0, 0);
             timePickerDialog.setMaxTime(20, 0, 0);
-
             ArrayList<Timepoint> selectableTimes = new ArrayList<>();
             boolean isToday = selectedDate.equals(String.format("%d/%d/%d", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH) + 1, now.get(Calendar.YEAR)));
 
@@ -111,15 +112,15 @@ public class PickAppointmentFragment extends Fragment {
                 if (isToday && hour < currentHour) continue;
                 selectableTimes.add(new Timepoint(hour, 0));
                 if (hour != 20) { // Exclude 20:30
-                    if (!isToday || (hour > currentHour || (hour == currentHour && currentMinute <= 30))) {
+                    if (!isToday || (hour > currentHour || (hour == currentHour && currentMinute < 30))) {
                         selectableTimes.add(new Timepoint(hour, 30));
                     }
                 }
             }
 
             // Remove blocked times for the selected date
-            if (blockAppointments != null) {
-                for (BlockAppointment block : blockAppointments) {
+            if (allAppointments != null) {
+                for (Appointment block : allAppointments) {
                     if (block.getDate().equals(selectedDate)) {
                         String[] timeParts = block.getTime().split(":");
                         int hour = Integer.parseInt(timeParts[0]);
@@ -181,31 +182,30 @@ public class PickAppointmentFragment extends Fragment {
                 .setDate(appointmentDate)
                 .setTime(appointmentTime).setAppointmentId(appointment.getAppointmentId());
 
-        // Save the appointment and block appointment to the database
-        saveBlockAppointment(blockAppointment);
+        // Save the appointment to the database
+
         fireBaseManager.saveAppointment(appointment);
         fireBaseManager.saveAppointmentForUser(user, appointment.getAppointmentId());
     }
 
-    public void saveBlockAppointment(BlockAppointment blockAppointment) {
-        fireBaseManager.saveBlockAppointment(blockAppointment);
-    }
 
-    public void getAllBlockAppointments() {
-        fireBaseManager.getAllBlockAppointments(new ListenerBlockAppointmentFromDB() {
+
+    private void getAllAppointments() {
+      fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
             @Override
-            public void onBlockAppointmentLoadSuccess(ArrayList<BlockAppointment> blockAppointment) {
-                blockAppointments = new ArrayList<>(blockAppointment);
+            public void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments) {
+                allAppointments = appointments;
             }
 
             @Override
-            public void onBlockAppointmentLoadFailed(String message) {
-                // Handle the error
+            public void onAppointmentFromDBLoadFailed(String error) {
+                Toast.makeText(getContext(), "Failed to load appointments", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-    public void navigateToHome() {
+    private void navigateToHome() {
          Intent intent = new Intent(this.getContext(), MainActivity.class);
         startActivity(intent);
 

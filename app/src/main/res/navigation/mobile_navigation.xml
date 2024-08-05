@@ -13,13 +13,25 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.vetappointment.ui.PickAppointmentFragment"
+        android:name="com.example.vetappointment.ui.AddNewAppointmentFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_add_new_appointment" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.vetappointment.ui.SlideshowFragment"
+        android:name="com.example.vetappointment.ui.AllAppointmentsUserFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_all_appointments" />
+
+    <fragment
+        android:id="@+id/nav_onlineVet"
+        android:name="com.example.vetappointment.ui.OnlineVetMessagesFragment"
+        android:label="@string/menu_onlineVet"
+        tools:layout="@layout/fragment_online_vet_messages" />
+
+    <fragment
+        android:id="@+id/nev_myMessages"
+        android:name="com.example.vetappointment.ui.AllMessagesToVetFragment"
+        android:label="@string/menu_myMessages"
+        tools:layout="@layout/fragment_all_messages_to_vet" />
 </navigation>

@@ -1,6 +1,10 @@
 package com.example.vetappointment.Models;
 
-public class Appointment {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Appointment implements Comparable<Appointment> {
 
     private String appointmentId;
     private String date;
@@ -94,5 +98,18 @@ public class Appointment {
     public Appointment setPetType(String petType) {
         this.petType = petType;
         return this;
+    }
+
+    @Override
+    public int compareTo(Appointment other) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date thisDateTime = dateFormat.parse(this.date + " " + this.time);
+            Date otherDateTime = dateFormat.parse(other.date + " " + other.time);
+            return thisDateTime.compareTo(otherDateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }
