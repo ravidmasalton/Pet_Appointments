@@ -24,7 +24,7 @@
 
 
         <item
-            android:id="@+id/nev_myMessages"
+            android:id="@+id/nav_myMessages"
             android:icon="@drawable/baseline_message_24"
             android:title="@string/menu_myMessages" />
     </group>

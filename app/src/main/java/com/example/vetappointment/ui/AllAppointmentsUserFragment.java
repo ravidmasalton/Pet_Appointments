@@ -18,6 +18,7 @@ import com.example.vetappointment.Models.Appointment;
 import com.example.vetappointment.Models.FireBaseManager;
 import com.example.vetappointment.R;
 import com.example.vetappointment.databinding.FragmentAddNewAppointmentBinding;
+import com.example.vetappointment.databinding.FragmentAllAppointmentsBinding;
 import com.example.vetappointment.databinding.FragmentAllMessagesToVetBinding;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,7 +32,7 @@ import java.util.Locale;
 
 public class AllAppointmentsUserFragment extends Fragment {
 
-    private FragmentAllMessagesToVetBinding binding;
+    private FragmentAllAppointmentsBinding binding;
 
     private RecyclerView recycler_view_appointments;
 
@@ -49,7 +50,7 @@ public class AllAppointmentsUserFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentAllMessagesToVetBinding.inflate(inflater, container, false);
+        binding = FragmentAllAppointmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         auth = FirebaseAuth.getInstance();
         findViews();

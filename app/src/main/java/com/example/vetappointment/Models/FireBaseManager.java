@@ -234,6 +234,47 @@ public class FireBaseManager {
     }
 
 
+    public void getAllOnlineAppointmentsForUser(String userId, ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments for user
+        ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
+        DatabaseReference ref = databaseReferenceUser.child(userId).child("onlineAppointments");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    long totalAppointments = snapshot.getChildrenCount();
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        String onlineAppointmentId = snap.getValue(String.class);
+                        databaseReferenceOnlineAppointment.child(onlineAppointmentId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                OnlineAppointment onlineAppointment = snapshot.getValue(OnlineAppointment.class);
+                                onlineAppointments.add(onlineAppointment);
+                                if (onlineAppointments.size() == totalAppointments) {
+                                    listener.onOnlineAppointmentFromDBLoadSuccess(onlineAppointments);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                listener.onOnlineAppointmentFromDBLoadFailed(error.getMessage());
+                            }
+                        });
+                    }
+                } else {
+                    listener.onOnlineAppointmentFromDBLoadSuccess(onlineAppointments); // No appointments found, return empty list
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onOnlineAppointmentFromDBLoadFailed(error.getMessage());
+            }
+        });
+    }
+
+
+
 
 
 

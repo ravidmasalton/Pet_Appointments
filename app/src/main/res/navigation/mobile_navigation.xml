@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -30,7 +31,7 @@
         tools:layout="@layout/fragment_online_vet_messages" />
 
     <fragment
-        android:id="@+id/nev_myMessages"
+        android:id="@+id/nav_myMessages"
         android:name="com.example.vetappointment.ui.AllMessagesToVetFragment"
         android:label="@string/menu_myMessages"
         tools:layout="@layout/fragment_all_messages_to_vet" />

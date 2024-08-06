@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.materialdatetimepicker)
     implementation("com.google.firebase:firebase-storage")
+    //Glide:
+    implementation (libs.glide)
+
 
 
 

@@ -11,12 +11,14 @@ lifecycleViewmodelKtx = "2.8.4"
 navigationFragment = "2.7.7"
 navigationUi = "2.7.7"
 
+
 materialdatetimepicker = "4.2.3"
 gmsPlayServicesAuth="20.7.0"
 gms="4.4.1"
 authUI = "8.0.2"
 firebaseDatabase = "21.0.0"
 firebaseBom = "33.1.2"
+glide = "4.16.0"
 activity = "1.9.1"
 
 
@@ -39,6 +41,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 materialdatetimepicker = { module = "com.wdullaer:materialdatetimepicker", version.ref = "materialdatetimepicker" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 
 
 
