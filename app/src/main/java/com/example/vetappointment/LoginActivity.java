@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vetappointment.Models.User;
+import com.example.vetappointment.Models.VetManager;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
@@ -23,11 +24,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,12 +55,27 @@ public class LoginActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference("users");
         auth= FirebaseAuth.getInstance();
         FirebaseUser user=auth.getCurrentUser();
+        addDoctorOffice(); // Add the doctor's office to the database only once
         if(user==null)
             login();
         else{
             prepopulateUserDetails(user);
             checkUserExistence(user.getUid());
         }
+    }
+
+    private  void addDoctorOffice() {
+        VetManager vetManager = new VetManager();
+        vetManager.setVetId(UUID.randomUUID().toString())
+                .setVetName("Vet Care")
+                .setVetPhone("0544922924")
+                .setVetEmail("vetClinic@gmail.com").
+                setVetAddress("Yitzhak ben Zvi St 18, Petah Tikva")
+                .setVetDescription("Our clinic is dedicated to providing the highest quality of care for your pets. We are committed to ensuring that every visit is a positive experience for both you and your beloved animal companions. Our experienced staff and state-of-the-art facilities are here to meet all of your pet's health and wellness needs.").
+                setStartTime("8:00").
+                setEndTime("20:00");
+        //DatabaseReference officeReference = FirebaseDatabase.getInstance().getReference("vetManager");
+       // officeReference.setValue(vetManager);
     }
 
     private void login() {
@@ -77,13 +97,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void updateUIWithUserDetails(FirebaseUser user) {
-        nameEditText.setText(user.getEmail());
-        nameEditText.setText(user.getDisplayName());
-        phoneEditText.setText(user.getPhoneNumber());
-    }
-
-
     // See: https://developer.android.com/training/basics/intents/result
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -95,6 +108,23 @@ public class LoginActivity extends AppCompatActivity {
             }
     );
 
+
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK && auth.getCurrentUser()!=null) {
+            updateUIWithUserDetails(auth.getCurrentUser());
+            FirebaseUser user = auth.getCurrentUser();
+            checkUserExistence(user.getUid());
+
+        } else {
+            Toast.makeText(this, "Sign-in cancelled by user.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void updateUIWithUserDetails(FirebaseUser user) {
+        nameEditText.setText(user.getEmail());
+        nameEditText.setText(user.getDisplayName());
+        phoneEditText.setText(user.getPhoneNumber());
+    }
 
 
     private void prepopulateUserDetails(FirebaseUser user) { // if user details are already saved, prepopulate the fields
@@ -122,21 +152,9 @@ public class LoginActivity extends AppCompatActivity {
             phoneEditText.setEnabled(true);
             phoneEditText.setFocusable(true);
         }
-        Log.e("ffff", "prepopulateUserDetails: ");
     }
 
 
-    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK && auth.getCurrentUser()!=null) {
-            updateUIWithUserDetails(auth.getCurrentUser());
-            FirebaseUser user = auth.getCurrentUser();
-            checkUserExistence(user.getUid());
-
-        } else {
-            Toast.makeText(this, "Sign-in cancelled by user.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
 
@@ -203,25 +221,39 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        User newuser = new User()  //save user details
-                .setId(user.getUid())
-                .setEmail(email)
-                .setName(name)
-                .setPhone(phone)
-                .setAppointments(null)
-                .setIsDoctor(false).
-                setMessagesToDoctor(null);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.orderByChild("doctor").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isDoctor = !snapshot.exists(); // If no doctor exists, this user will be the doctor.
 
-        userRef.child(user.getUid()).setValue(newuser) //save user details to the database
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        navigateToMainActivity();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Failed to save user details", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
-    }
+                User newuser = new User()  //save user details
+                        .setId(user.getUid())
+                        .setEmail(email)
+                        .setName(name)
+                        .setPhone(phone)
+                        .setAppointments(null)
+                        .setIsDoctor(isDoctor).
+                        setMessagesToDoctor(null);
+
+
+                userRef.child(user.getUid()).setValue(newuser) //save user details to the database
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                navigateToMainActivity();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Failed to save user details", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        }
 
     private void checkUserExistence(String uid) {
 

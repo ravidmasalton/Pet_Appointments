@@ -22,6 +22,7 @@ import com.example.vetappointment.databinding.FragmentAllAppointmentsBinding;
 import com.example.vetappointment.databinding.FragmentAllMessagesToVetBinding;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class AllAppointmentsUserFragment extends Fragment {
 
     private RecyclerView recycler_view_appointments;
 
-    private TextInputEditText edit_text_date_filter;
+    private MaterialTextView edit_text_date_filter;
     private FirebaseAuth auth;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
     private ArrayList<Appointment> allAppointments = new ArrayList<>();
@@ -72,7 +73,8 @@ public class AllAppointmentsUserFragment extends Fragment {
                 allAppointments.clear();
                 allAppointments.addAll(appointments);
                 getUserAppointment();
-                setupAdapterAndRecyclerView();
+
+
 
 
 
@@ -95,6 +97,9 @@ public class AllAppointmentsUserFragment extends Fragment {
                 userAppointments.add(appointment);
             }
         }
+        setupAdapterAndRecyclerView();
+
+
 
 
     }
@@ -153,7 +158,7 @@ public class AllAppointmentsUserFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
         if (checkedId == R.id.future_appointments_button) {
-            for (Appointment appointment : allAppointments) {
+            for (Appointment appointment : userAppointments) {
                 try {
                     Date appointmentDate = sdf.parse(appointment.getDate() + " " + appointment.getTime());
                     if (appointmentDate != null && appointmentDate.after(currentDate)) {
@@ -164,7 +169,7 @@ public class AllAppointmentsUserFragment extends Fragment {
                 }
             }
         } else if (checkedId == R.id.history_appointments_button) {
-            for (Appointment appointment : allAppointments) {
+            for (Appointment appointment : userAppointments) {
                 try {
                     Date appointmentDate = sdf.parse(appointment.getDate() + " " + appointment.getTime());
                     if (appointmentDate != null && appointmentDate.before(currentDate)) {
@@ -184,7 +189,6 @@ public class AllAppointmentsUserFragment extends Fragment {
                 filterAndDisplayAppointments(checkedId);
             }
         });
-        toggleButtonGroup.check(R.id.future_appointments_button); // Ensure one button is always checked
     }
 
 
@@ -193,7 +197,7 @@ public class AllAppointmentsUserFragment extends Fragment {
 
     private void findViews() {
         recycler_view_appointments = binding.recyclerViewAppointments;
-        edit_text_date_filter = binding.editTextDateInput;
+        edit_text_date_filter = binding.dateFilterText;
         toggleButtonGroup = binding.toggleButton;
     }
 

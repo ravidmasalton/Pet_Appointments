@@ -16,6 +16,7 @@ import com.example.vetappointment.Models.BlockAppointment;
 import com.example.vetappointment.MainActivity;
 import com.example.vetappointment.Models.User;
 import com.example.vetappointment.databinding.FragmentAddNewAppointmentBinding;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.wdullaer.materialdatetimepicker.time.Timepoint;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -27,7 +28,6 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.vetappointment.Models.FireBaseManager;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -42,10 +42,9 @@ public class AddNewAppointmentFragment extends Fragment {
     private TimePickerDialog timePickerDialog;
     private Spinner optionsSpinner;
     private ArrayList<Appointment> allAppointments = new ArrayList<>();
-    private MaterialButton confirmButton;
+    private ExtendedFloatingActionButton confirmButton;
     private FirebaseAuth auth;
     FireBaseManager fireBaseManager = FireBaseManager.getInstance();
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public class AddNewAppointmentFragment extends Fragment {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            if(getContext() == null) return;
+            if (getContext() == null) return;
 
             datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) -> {
                 // Format the selected date
@@ -110,6 +109,12 @@ public class AddNewAppointmentFragment extends Fragment {
 
             for (int hour = 8; hour <= 20; hour++) {
                 if (isToday && hour < currentHour) continue;
+                if (isToday && hour == currentHour && currentMinute > 0) {
+                    if (currentMinute <= 30) {
+                        selectableTimes.add(new Timepoint(hour, 30));
+                    }
+                    continue;
+                }
                 selectableTimes.add(new Timepoint(hour, 0));
                 if (hour != 20) { // Exclude 20:30
                     if (!isToday || (hour > currentHour || (hour == currentHour && currentMinute < 30))) {
@@ -151,8 +156,6 @@ public class AddNewAppointmentFragment extends Fragment {
                 addAppointmentToDB(user);
             }
         });
-        showAlert("Appointment Confirmed", "Your appointment has been confirmed", this::navigateToHome);
-       // navigateToHome();
     }
 
     private void addAppointmentToDB(User user) {
@@ -186,12 +189,12 @@ public class AddNewAppointmentFragment extends Fragment {
 
         fireBaseManager.saveAppointment(appointment);
         fireBaseManager.saveAppointmentForUser(user, appointment.getAppointmentId());
+        showAlert("Appointment Confirmed", "Your appointment has been confirmed", this::navigateToHome);
+
     }
 
-
-
     private void getAllAppointments() {
-      fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
+        fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
             @Override
             public void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments) {
                 allAppointments = appointments;
@@ -202,13 +205,11 @@ public class AddNewAppointmentFragment extends Fragment {
                 Toast.makeText(getContext(), "Failed to load appointments", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void navigateToHome() {
-         Intent intent = new Intent(this.getContext(), MainActivity.class);
+        Intent intent = new Intent(this.getContext(), MainActivity.class);
         startActivity(intent);
-
     }
 
     private void showAlert(String title, String message, Runnable onDismiss) {
@@ -219,7 +220,6 @@ public class AddNewAppointmentFragment extends Fragment {
                 .setCancelable(false) // Prevents the dialog from being dismissed by the back button or tapping outside
                 .show();
     }
-
 
     @Override
     public void onDestroyView() {

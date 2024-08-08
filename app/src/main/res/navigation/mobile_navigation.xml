@@ -13,15 +13,15 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_add_appointment"
         android:name="com.example.vetappointment.ui.AddNewAppointmentFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_add_appointment"
         tools:layout="@layout/fragment_add_new_appointment" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_all_appointments"
         android:name="com.example.vetappointment.ui.AllAppointmentsUserFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_all_appointments"
         tools:layout="@layout/fragment_all_appointments" />
 
     <fragment
@@ -35,4 +35,22 @@
         android:name="com.example.vetappointment.ui.AllMessagesToVetFragment"
         android:label="@string/menu_myMessages"
         tools:layout="@layout/fragment_all_messages_to_vet" />
+
+    <fragment
+        android:id="@+id/nav_review"
+        android:name="com.example.vetappointment.ui.ReviewFragment"
+        android:label="@string/menu_review"
+        tools:layout="@layout/fragment_review" />
+
+    <fragment
+        android:id="@+id/nav_about_us"
+        android:name="com.example.vetappointment.ui.About_us_fragment"
+        android:label="@string/menu_about_us"
+        tools:layout="@layout/fragment_about_us" >
+        <action
+            android:id="@+id/action_nav_about_us_self"
+            app:destination="@id/nav_about_us" />
+    </fragment>
+
+
 </navigation>

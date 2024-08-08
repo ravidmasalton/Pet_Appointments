@@ -9,13 +9,13 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_add_appointment"
             android:icon="@drawable/add_square_svgrepo_com"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_add_appointment" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_all_appointments"
             android:icon="@drawable/calendar_user_svgrepo_com"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_all_appointments" />
 
         <item
             android:id="@+id/nav_onlineVet"
@@ -23,9 +23,31 @@
             android:title="@string/menu_onlineVet" />
 
 
+
         <item
             android:id="@+id/nav_myMessages"
             android:icon="@drawable/baseline_message_24"
             android:title="@string/menu_myMessages" />
+
+
+
+        <item
+            android:id="@+id/nav_review"
+            android:icon="@drawable/review_checkmark_svgrepo_com"
+            android:title="@string/menu_review" />
+
+
+
+        <item
+            android:id="@+id/nav_about_us"
+            android:icon="@drawable/about_svgrepo_com"
+            android:title="@string/menu_about_us" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/exit"
+            android:title="@string/menu_logout" />
+
+
     </group>
 </menu>

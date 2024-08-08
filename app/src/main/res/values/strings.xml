@@ -8,10 +8,14 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Vet Appointment</string>
-    <string name="menu_slideshow">My Appointments </string>
+    <string name="menu_add_appointment">Vet Appointment</string>
+    <string name="menu_all_appointments">All Appointments</string>
     <string name="menu_onlineVet">Online Vet</string>
     <string name="menu_myMessages">My Messages</string>
+    <string name="menu_review">Rate us</string>
+    <string name="menu_about_us"> About us</string>
+    <string name="menu_logout"> Logout </string>
+
 
 
     <string-array name="appointment_options">

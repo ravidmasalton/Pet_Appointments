@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.vetappointment.Listeners.ListenerGetAllAppointmentFromDB;
 import com.example.vetappointment.Listeners.ListenerBlockAppointmentFromDB;
 import com.example.vetappointment.Listeners.ListenerGetAllOnlineAppointmentFromDB;
+import com.example.vetappointment.Listeners.ListenerGetAllReviewFromDB;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +31,9 @@ public class FireBaseManager {
     private final DatabaseReference databaseReferenceAppointment; // Appointments
     private final DatabaseReference databaseReferenceUser; // Users
     private final DatabaseReference databaseReferenceBlockAppointment; // BlockAppointments
-    private final DatabaseReference databaseReferenceOnlineAppointment ; // OnlineAppointments
+    private final DatabaseReference databaseReferenceOnlineAppointment; // OnlineAppointments
+    private final DatabaseReference databaseReferenceReview; // Reviews
+    private final DatabaseReference databaseReferenceVetManager; // VetManager
 
     // Private constructor to prevent instantiation
     private FireBaseManager() {
@@ -39,7 +42,9 @@ public class FireBaseManager {
         databaseReferenceAppointment = dmyDatabase.getReference("appointments");
         databaseReferenceUser = dmyDatabase.getReference("users");
         databaseReferenceBlockAppointment = dmyDatabase.getReference("blockAppointments");
-        databaseReferenceOnlineAppointment= dmyDatabase.getReference("onlineAppointments");
+        databaseReferenceOnlineAppointment = dmyDatabase.getReference("onlineAppointments");
+        databaseReferenceReview = dmyDatabase.getReference("reviews");
+        databaseReferenceVetManager= dmyDatabase.getReference("vetManager");
 
     }
 
@@ -111,7 +116,6 @@ public class FireBaseManager {
     }
 
 
-
     public void saveBlockAppointment(BlockAppointment blockAppointment) { // Save block appointment
         DatabaseReference ref = databaseReferenceBlockAppointment.child(blockAppointment.getBlockDayId());
         ref.setValue(blockAppointment);
@@ -180,12 +184,11 @@ public class FireBaseManager {
     }
 
 
-
-    public void uploadImage(Uri uri, String userUid,CallBack<String> callback) { // Upload image
+    public void uploadImage(Uri uri, String userUid, CallBack<String> callback) { // Upload image
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference imageRef = storageRef.child("USERS").child(userUid + ".jpg");
 
-        if(uri==null){
+        if (uri == null) {
             callback.res("");
             return;
         }
@@ -211,24 +214,20 @@ public class FireBaseManager {
         });
 
 
-
     }
 
-    public void saveOnlineAppointment(OnlineAppointment onlineAppointment,Uri uri) { // Save online appointment
+    public void saveOnlineAppointment(OnlineAppointment onlineAppointment, Uri uri) { // Save online appointment
 
 
-            uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
-                @Override
-                public void res(String res) {
-                    onlineAppointment.setImageUrl(res);
-                    DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
-                    ref.setValue(onlineAppointment);
-                    saveOnlineAppointmentForUser(onlineAppointment.getUserId(),onlineAppointment.getOnlineAppointmentId());
-                }
-            });
-
-
-
+        uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
+            @Override
+            public void res(String res) {
+                onlineAppointment.setImageUrl(res);
+                DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
+                ref.setValue(onlineAppointment);
+                saveOnlineAppointmentForUser(onlineAppointment.getUserId(), onlineAppointment.getOnlineAppointmentId());
+            }
+        });
 
 
     }
@@ -274,10 +273,6 @@ public class FireBaseManager {
     }
 
 
-
-
-
-
     public void getAllOnlineAppointments(ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments
         ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
         databaseReferenceOnlineAppointment.addValueEventListener(new ValueEventListener() {
@@ -298,13 +293,67 @@ public class FireBaseManager {
     }
 
 
-    public void saveOnlineAppointmentForUser(String  userId, String onlineAppointmentId) { // Save online appointment for user
+    public void saveOnlineAppointmentForUser(String userId, String onlineAppointmentId) { // Save online appointment for user
         DatabaseReference ref = databaseReferenceUser.child(userId).child("onlineAppointments");
         ref.push().setValue(onlineAppointmentId);
     }
 
 
+    public void saveReview(Review review) { // Save review
+        DatabaseReference ref = databaseReferenceReview.child(review.getReviewId());
+        ref.setValue(review);
+    }
+
+    public void getAllReviews(ListenerGetAllReviewFromDB listener) { // Get all reviews
+        ArrayList<Review> reviews = new ArrayList<>();
+        databaseReferenceReview.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Review review = snap.getValue(Review.class);
+                    reviews.add(review);
+                }
+                listener.onReviewFromDBLoadSuccess(reviews);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onReviewFromDBLoadFailed(error.getMessage());
+            }
+        });
 
 
+    }
 
+    public void isVeterinarian(String userId, CallBack<Boolean> callback) { // Check if user is veterinarian
+        DatabaseReference ref = databaseReferenceUser.child(userId).child("isDoctor");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    callback.res(snapshot.getValue(Boolean.class));
+                } else {
+                    callback.res(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void getVetManager(CallBack<VetManager> callback) { // Get veterinarian
+        databaseReferenceVetManager.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                VetManager vetManager = snapshot.getValue(VetManager.class);
+                callback.res(vetManager);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
 }

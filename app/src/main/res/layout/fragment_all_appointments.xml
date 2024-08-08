@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
+        android:textColor="@android:color/black"
         android:text="My Appointments"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -32,6 +33,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:selectionRequired="true"
         app:layout_constraintTop_toBottomOf="@id/text_title"
         app:singleSelection="true">
 
@@ -40,6 +42,8 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            app:strokeColor="#CDDC39"
             android:text="Future Appointments"
             android:textAllCaps="false" />
 
@@ -48,56 +52,36 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            app:strokeColor="#4CAF50"
             android:text="History Appointments"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button3"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
             android:textAllCaps="false" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <!-- Order Count TextView -->
-    <TextView
-        android:id="@+id/text"
+    <!-- Date Filter MaterialCardView -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/filter_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text=""
-        android:textSize="18sp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toggleButton" />
+        app:layout_constraintTop_toBottomOf="@id/toggleButton"
+        app:strokeColor="@android:color/black"
+        app:strokeWidth="1dp">
 
-    <!-- Date Filter TextInputLayout -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_text_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Filter by Date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text"
-        app:startIconDrawable="@drawable/ic_date">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_date_input"
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/date_filter_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:inputType="date"
-            android:textSize="18sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+            android:padding="16dp"
+            android:text="Filter By Date"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -107,10 +91,8 @@
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_date"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/filter_card"
         tools:listitem="@layout/fragment_item_appointment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
