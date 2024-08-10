@@ -44,13 +44,16 @@
 
     <fragment
         android:id="@+id/nav_about_us"
-        android:name="com.example.vetappointment.ui.About_us_fragment"
+        android:name="com.example.vetappointment.ui.AboutUsFragment"
         android:label="@string/menu_about_us"
-        tools:layout="@layout/fragment_about_us" >
-        <action
-            android:id="@+id/action_nav_about_us_self"
-            app:destination="@id/nav_about_us" />
-    </fragment>
+        tools:layout="@layout/fragment_about_us" />
+
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.example.vetappointment.ui.SettingFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_setting" />
+
 
 
 </navigation>

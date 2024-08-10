@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
             updateUIWithUserDetails(auth.getCurrentUser());
             FirebaseUser user = auth.getCurrentUser();
             checkUserExistence(user.getUid());
+            prepopulateUserDetails(user);
 
         } else {
             Toast.makeText(this, "Sign-in cancelled by user.", Toast.LENGTH_SHORT).show();

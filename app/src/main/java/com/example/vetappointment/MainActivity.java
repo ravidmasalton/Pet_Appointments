@@ -2,29 +2,29 @@ package com.example.vetappointment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.vetappointment.Models.FireBaseManager;
-import com.example.vetappointment.Models.User;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.vetappointment.Models.FireBaseManager;
+import com.example.vetappointment.Models.User;
 import com.example.vetappointment.databinding.ActivityMainBinding;
+import com.example.vetappointment.ui.SettingFragment;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private FirebaseAuth auth=FirebaseAuth.getInstance();
-    private FireBaseManager fireBaseManager=FireBaseManager.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +46,23 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_add_appointment, R.id.nav_all_appointments,R.id.nav_onlineVet,R.id.nav_myMessages,R.id.nav_review,R.id.nav_about_us,R.id.nav_logout)
+                R.id.nav_home, R.id.nav_add_appointment, R.id.nav_all_appointments, R.id.nav_onlineVet, R.id.nav_myMessages, R.id.nav_review, R.id.nav_about_us, R.id.nav_logout, R.id.nav_setting)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        View header = navigationView.getHeaderView(0);
 
-        String userId=auth.getCurrentUser().getUid();
+        View header = navigationView.getHeaderView(0);
+        String userId = auth.getCurrentUser().getUid();
         changeNavHeader(header, userId);
 
         navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
             logout();
             return true;
         });
-
     }
 
     private void changeNavHeader(View header, String userId) {
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         FirebaseUser user = auth.getCurrentUser();
         Glide.with(header.getContext()) // Load the image from the URL
                 .load(user.getPhotoUrl())
@@ -93,15 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 .error(R.drawable.user)
                 .override(200, 200) // Resize the image
                 .into(imageTitleLabel);
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -114,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         AuthUI.getInstance().signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-
                         // Redirect the user to the LoginActivity
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

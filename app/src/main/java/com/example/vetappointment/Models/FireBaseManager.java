@@ -74,7 +74,7 @@ public class FireBaseManager {
 
     public void getAllAppointments(ListenerGetAllAppointmentFromDB listener) { // Get all appointments
         ArrayList<Appointment> appointments = new ArrayList<>();
-        databaseReferenceAppointment.addValueEventListener(new ValueEventListener() {
+        databaseReferenceAppointment.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
@@ -90,6 +90,9 @@ public class FireBaseManager {
             }
         });
     }
+
+
+
 
     public void getUser(String userId, CallBack<User> callback) { // Get user
         DatabaseReference ref = databaseReferenceUser.child(userId);
@@ -124,7 +127,7 @@ public class FireBaseManager {
 
     public void getAllBlockAppointments(ListenerBlockAppointmentFromDB listener) { // Get block appointments
         ArrayList<BlockAppointment> blockAppointments = new ArrayList<>();
-        databaseReferenceBlockAppointment.addValueEventListener(new ValueEventListener() {
+        databaseReferenceBlockAppointment.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
@@ -141,24 +144,8 @@ public class FireBaseManager {
         });
     }
 
-    public void removeBlockAppointment(Appointment appointment) { // Remove block appointment
-        getAllBlockAppointments(new ListenerBlockAppointmentFromDB() {
-            @Override
-            public void onBlockAppointmentLoadSuccess(ArrayList<BlockAppointment> blockAppointment) {
-                for (BlockAppointment blockAppointment1 : blockAppointment) {
-                    if (blockAppointment1.getAppointmentId().equals(appointment.getAppointmentId())) {
-                        DatabaseReference ref = databaseReferenceBlockAppointment.child(blockAppointment1.getBlockDayId());
-                        ref.removeValue();
-                    }
-                }
-            }
-
-            @Override
-            public void onBlockAppointmentLoadFailed(String message) {
-            }
-        });
-
-
+    public void removeBlockAppointment(BlockAppointment blockAppointment) { // Remove block appointment
+      databaseReferenceBlockAppointment.child(blockAppointment.getBlockDayId()).removeValue();
     }
 
     public void removeAppointmentFromUser(String userId, String appointmentId) { // Remove appointment for user
@@ -306,7 +293,7 @@ public class FireBaseManager {
 
     public void getAllReviews(ListenerGetAllReviewFromDB listener) { // Get all reviews
         ArrayList<Review> reviews = new ArrayList<>();
-        databaseReferenceReview.addValueEventListener(new ValueEventListener() {
+        databaseReferenceReview.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
@@ -356,4 +343,76 @@ public class FireBaseManager {
             }
         });
     }
+    public void updateVetManager(String startTime, String endTime) {
+        // Retrieve the current VetManager from the database
+        databaseReferenceVetManager.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Get the current VetManager object
+                    VetManager vetManager = snapshot.getValue(VetManager.class);
+
+                    if (vetManager != null) {
+                        // Update the start time and end time
+                        vetManager.setStartTime(startTime);
+                        vetManager.setEndTime(endTime);
+
+                        // Save the updated VetManager object back to the database
+                        databaseReferenceVetManager.setValue(vetManager)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Handle success (optional)
+                                    // e.g., Log.d("Firebase", "VetManager updated successfully");
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle failure (optional)
+                                    // e.g., Log.e("Firebase", "Failed to update VetManager", e);
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle potential errors (optional)
+                // e.g., Log.e("Firebase", "Failed to retrieve VetManager", error.toException());
+            }
+        });
+    }
+
+    public void saveResponseToOnlineAppointment(String onlineAppointmentId, String response, CallBack<Boolean> callback) { // Save response to online appointment
+        DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointmentId).child("response");
+        ref.setValue(response)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.res(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.res(false);
+                    }
+                });
+
+         ref = databaseReferenceOnlineAppointment.child(onlineAppointmentId).child("active");
+         ref.setValue(false)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.res(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.res(false);
+                    }
+                });
+
+    }
+
+
+
+
 }
