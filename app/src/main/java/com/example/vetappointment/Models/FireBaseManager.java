@@ -235,7 +235,8 @@ public class FireBaseManager {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 OnlineAppointment onlineAppointment = snapshot.getValue(OnlineAppointment.class);
-                                onlineAppointments.add(onlineAppointment);
+                                if (onlineAppointment != null)
+                                       onlineAppointments.add(onlineAppointment);
                                 if (onlineAppointments.size() == totalAppointments) {
                                     listener.onOnlineAppointmentFromDBLoadSuccess(onlineAppointments);
                                 }
@@ -262,7 +263,7 @@ public class FireBaseManager {
 
     public void getAllOnlineAppointments(ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments
         ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
-        databaseReferenceOnlineAppointment.addValueEventListener(new ValueEventListener() {
+        databaseReferenceOnlineAppointment.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {

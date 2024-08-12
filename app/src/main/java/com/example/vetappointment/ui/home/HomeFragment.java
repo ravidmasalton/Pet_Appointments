@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,16 +59,16 @@ public class HomeFragment extends Fragment {
         initView();
         setupAdapterAndRecyclerView();
         getAllAppointmentsFromDatabase();
-        getAllOnlineAppointmentsFromDatabase();
+        getAllOnlineAppointmentsOFUserFromDatabase();
         return root;
     }
 
     private void initView() {
         btn_view_all_appointments.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.nav_all_appointments));
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_all_appointments));
 
         btn_view_all_messages.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.nav_myMessages));
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_myMessages));
     }
 
     private void getUserInfo() {
@@ -84,14 +83,16 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void getAllOnlineAppointmentsFromDatabase() {
+
+
+    private void getAllOnlineAppointmentsOFUserFromDatabase() {
         String userId = auth.getCurrentUser().getUid();
         fireBaseManager.getAllOnlineAppointmentsForUser(userId, new ListenerGetAllOnlineAppointmentFromDB() {
             @Override
             public void onOnlineAppointmentFromDBLoadSuccess(ArrayList<OnlineAppointment> appointments) {
                 int count = 0;
                 for (OnlineAppointment appointment : appointments) {
-                    if (appointment.getActive()) {
+                    if (appointment!=null &&  appointment.getActive()) {
                         count++;
                     }
                 }
@@ -111,7 +112,7 @@ public class HomeFragment extends Fragment {
             public void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments) {
                 allAppointments.clear();
                 allAppointments.addAll(appointments);
-                getUserAppointment();
+                isVeterinarian();
             }
 
             @Override
@@ -121,15 +122,44 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void getUserAppointment() {
-        String currentUserId = auth.getCurrentUser().getUid();
-        userAppointments.clear();
-        for (Appointment appointment : allAppointments) {
-            if (appointment.getIdCustomer().equals(currentUserId)) {
-                userAppointments.add(appointment);
+    private void isVeterinarian() {
+        fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
+            @Override
+            public void res(Boolean isVet) {
+                if (isVet) {
+                    userAppointments=allAppointments;
+                    getTheNextappointment();
+                    getAllOnlineAppointments();
+                } else {
+                    getUserAppointment();
+                }
             }
-        }
+        });
+    }
 
+    private void getAllOnlineAppointments() {
+        fireBaseManager.getAllOnlineAppointments(new ListenerGetAllOnlineAppointmentFromDB(){
+
+            @Override
+            public void onOnlineAppointmentFromDBLoadSuccess(ArrayList<OnlineAppointment> appointments) {
+                int count = 0;
+                for (OnlineAppointment appointment : appointments) {
+                    if (appointment!=null &&  appointment.getActive()) {
+                        count++;
+                    }
+                }
+                numOfMessagesPending.setText(" You have " + count + " pending messages");
+            }
+
+            @Override
+            public void onOnlineAppointmentFromDBLoadFailed(String message) {
+
+            }
+        });
+
+    }
+
+    private void getTheNextappointment() {
         ArrayList<Appointment> filteredAppointments = new ArrayList<>();
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -164,7 +194,23 @@ public class HomeFragment extends Fragment {
             appointmentAdapter.updateAppointments(userAppointments, appointmentAdapter.getIsPastAppointments());
             titleYourNextAppointment.setText("You have no upcoming appointments");
         }
+
     }
+
+    private void getUserAppointment() {
+        String currentUserId = auth.getCurrentUser().getUid();
+        userAppointments.clear();
+        for (Appointment appointment : allAppointments) {
+            if (appointment.getIdCustomer().equals(currentUserId)) {
+                userAppointments.add(appointment);
+            }
+        }
+        getTheNextappointment();
+
+
+    }
+
+
 
     private void setupAdapterAndRecyclerView() {
         appointmentAdapter = new AppointmentAdapter(getContext(), userAppointments, false);

@@ -51,7 +51,7 @@ public class AllAppointmentsUserFragment extends Fragment {
         findViews();
         filterAppointmentsButton();
         getAllAppointmentsFromDatabase();
-
+        isVetLoaded();
         return root;
     }
 
@@ -111,18 +111,24 @@ public class AllAppointmentsUserFragment extends Fragment {
         for (Appointment appointment : userAppointments) {
             try {
                 Date appointmentDate = sdf.parse(appointment.getDate() + " " + appointment.getTime());
-                if (checkedId == R.id.future_appointments_button && appointmentDate != null && appointmentDate.after(currentDate)) {
+                if (appointmentDate == null) {
+                    continue; // Skip if date parsing fails
+                }
+
+                if (checkedId == R.id.future_appointments_button && appointmentDate.after(currentDate)) {
                     filteredAppointments.add(appointment);
-                } else if (checkedId == R.id.history_appointments_button && appointmentDate != null && appointmentDate.before(currentDate)) {
+                } else if (checkedId == R.id.history_appointments_button && appointmentDate.before(currentDate)) {
                     filteredAppointments.add(appointment);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(getContext(), "Error parsing appointment date: " + appointment.getDate() + " " + appointment.getTime(), Toast.LENGTH_LONG).show();
             }
         }
 
         appointmentAdapter.updateAppointments(filteredAppointments, checkedId == R.id.history_appointments_button);
     }
+
 
     private void setupToggleButtons() {
         toggleButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
@@ -153,6 +159,24 @@ public class AllAppointmentsUserFragment extends Fragment {
         appointmentAdapter.updateAppointments(currentAllAppointments,appointmentAdapter.getIsPastAppointments());
 
     }
+
+
+
+    private void isVetLoaded() {
+        fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
+            @Override
+            public void res(Boolean res) {
+                if (res) {
+                    userAppointments= allAppointments;
+                    appointmentAdapter.updateAppointments(allAppointments,appointmentAdapter.getIsPastAppointments());
+
+                }
+            }
+        });
+
+    }
+
+
 
     @Override
     public void onDestroyView() {

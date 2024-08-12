@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" /> <!-- Background color of the FrameLayout, usually transparent -->
+    <stroke
+        android:width="10dp"
+        android:color="@android:color/black" /> <!-- Border color and width -->
+    <padding
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp" /> <!-- Optional: Adjust padding to ensure the border doesn't overlap the CardView content -->
+    <corners android:radius="4dp" /> <!-- Optional: Adjust corner radius to match the CardView's corner radius -->
+</shape>

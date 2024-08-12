@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
+        checkIfVet();
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_add_appointment, R.id.nav_all_appointments, R.id.nav_onlineVet, R.id.nav_myMessages, R.id.nav_review, R.id.nav_about_us, R.id.nav_logout, R.id.nav_setting)
                 .setOpenableLayout(drawer)
@@ -63,7 +65,48 @@ public class MainActivity extends AppCompatActivity {
             logout();
             return true;
         });
+
+
+
+
     }
+
+
+    private void checkIfVet(){
+        fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
+            @Override
+            public void res(Boolean res) {
+                    updateMenu(res);
+
+
+            }
+        });
+    }
+
+    private void updateMenu(Boolean isVet){
+
+        NavigationView navigationView = binding.navView;
+        Menu menu = navigationView.getMenu();
+        MenuItem onlineVetItem = menu.findItem(R.id.nav_onlineVet);
+        MenuItem addAppointmentItem = menu.findItem(R.id.nav_add_appointment);
+        MenuItem settingItem = menu.findItem(R.id.nav_setting);
+
+
+        if (isVet) {
+            addAppointmentItem.setVisible(false);
+            onlineVetItem.setVisible(false);
+
+
+        }
+        else {
+            settingItem.setVisible(false);
+        }
+
+
+
+
+    }
+
 
     private void changeNavHeader(View header, String userId) {
         TextView textTitleLabel = header.findViewById(R.id.name_LBL);
@@ -91,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
                 .override(200, 200) // Resize the image
                 .into(imageTitleLabel);
     }
+
+
+
 
 
 

@@ -21,6 +21,7 @@ firebaseDatabase = "21.0.0"
 firebaseBom = "33.1.2"
 glide = "4.16.0"
 activity = "1.9.1"
+lottie = "6.3.0"
 
 
 [libraries]
@@ -44,6 +45,7 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 materialdatetimepicker = { module = "com.wdullaer:materialdatetimepicker", version.ref = "materialdatetimepicker" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 
 
 

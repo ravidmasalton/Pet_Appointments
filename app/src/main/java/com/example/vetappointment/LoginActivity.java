@@ -1,10 +1,13 @@
 package com.example.vetappointment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,11 +20,11 @@ import com.example.vetappointment.Models.User;
 import com.example.vetappointment.Models.VetManager;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,11 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViews();
+        setupUI(findViewById(android.R.id.content));
         initUI();
         userRef = FirebaseDatabase.getInstance().getReference("users");
         auth= FirebaseAuth.getInstance();
         FirebaseUser user=auth.getCurrentUser();
-        addDoctorOffice(); // Add the doctor's office to the database only once
+        //addDoctorOffice(); // Add the doctor's office to the database only once
         if(user==null)
             login();
         else{
@@ -74,9 +78,19 @@ public class LoginActivity extends AppCompatActivity {
                 .setVetDescription("Our clinic is dedicated to providing the highest quality of care for your pets. We are committed to ensuring that every visit is a positive experience for both you and your beloved animal companions. Our experienced staff and state-of-the-art facilities are here to meet all of your pet's health and wellness needs.").
                 setStartTime("8:00").
                 setEndTime("20:00");
-        //DatabaseReference officeReference = FirebaseDatabase.getInstance().getReference("vetManager");
-       // officeReference.setValue(vetManager);
+        DatabaseReference officeReference = FirebaseDatabase.getInstance().getReference("vetManager");
+        officeReference.setValue(vetManager);
     }
+    // See: https://developer.android.com/training/basics/intents/result
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult(result);
+                }
+            }
+    );
 
     private void login() {
 
@@ -97,20 +111,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    // See: https://developer.android.com/training/basics/intents/result
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-                }
-            }
-    );
-
-
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK && auth.getCurrentUser()!=null) {
             updateUIWithUserDetails(auth.getCurrentUser());
             FirebaseUser user = auth.getCurrentUser();
@@ -223,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.orderByChild("doctor").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.orderByChild("isDoctor").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean isDoctor = !snapshot.exists(); // If no doctor exists, this user will be the doctor.
@@ -295,5 +296,30 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+
+    private void setupUI(View view) {
+        // Set up a touch listener to close the keyboard when the user taps outside the text boxes
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener((v, event) -> {
+                hideKeyboard(v);
+                return false;
+            });
+        }
+
+        // If a layout container, iterate over children and apply the setupUI method
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 }

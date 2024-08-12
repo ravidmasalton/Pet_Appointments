@@ -7,7 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-        <!-- Add other colors as needed -->
+    <color name="submit_button_background">#8BC34A</color>
+    <color name="rating_bar_progress">#FFEE58</color>
+    <color name="rating_bar_secondary_progress">#FDD835</color>
+    <color name="amber_700">#FFA000</color>
+    <color name="amber_500">#FFC107</color>
+    <color name="green_500">#4CAF50</color>
+
+    <!-- Add other colors as needed -->
 
 
 </resources>

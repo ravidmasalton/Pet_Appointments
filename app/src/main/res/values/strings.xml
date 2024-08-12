@@ -17,6 +17,22 @@
     <string name="menu_logout"> Logout </string>
 
 
+    <string name="write_a_review">Write a Review</string>
+    <string name="your_review">Your Review</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="overall_rating">Overall Rating:</string>
+    <string name="all_reviews">All Reviews:</string>
+
+
+    <string name="about_us_title">About Us</string>
+    <string name="introduction_text">Welcome to Our Clinic. We provide the best services for your pets with love and care.</string>
+    <string name="opening_time_text">Opening Time: 9:00 AM</string>
+    <string name="closing_time_text">Closing Time: 8:00 PM</string>
+    <string name="address_text">Address: 123 Main Street, City, Country</string>
+    <string name="logo_desc">Clinic Logo</string>
+
+    <string name="image_description">Zoomable Image</string>
+    <string name="close_button_description">Close</string>
 
     <string-array name="appointment_options">
         <item> Vaccination  </item>
@@ -24,8 +40,6 @@
         <item> chip </item>
         <item> Medical treatment </item>
     </string-array>
-
-
 
 
     <string-array name="start_times">
@@ -58,9 +72,6 @@
 
 
     </string-array>
-
-
-
 
 
 </resources>

@@ -62,6 +62,9 @@ dependencies {
     //Glide:
     implementation (libs.glide)
     implementation (libs.material.v160)
+    implementation(libs.lottie)
+
+
 
 
 
