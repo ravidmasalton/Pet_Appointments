@@ -16,6 +16,7 @@ import com.example.vetappointment.Models.User;
 import com.example.vetappointment.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private boolean isPastAppointments;
     private CancelAppointmentCallback cancelAppointmentCallback;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public AppointmentAdapter( Context context,ArrayList<Appointment> appointments, boolean isPastAppointments) {
         this.context=context;
@@ -68,12 +70,26 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 if (user == null) {
                     return;
                 }
+                fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(),new FireBaseManager.CallBack<Boolean>() {
+                    @Override
+                    public void res(Boolean isVet) {
+                        if (isVet) {
+                            holder.cancelButton.setVisibility(View.GONE);
+                        }
+                        else
+                            holder.cancelButton.setVisibility(isPastAppointments ? View.GONE : View.VISIBLE);
+
+                    }
+                });
+
+
+
                 holder.usernameTextView.setText(user.getName());
                 holder.appointmentDateTextView.setText(appointment.getDate());
                 holder.appointmentTimeTextView.setText(appointment.getTime());
                 holder.serviceTypeTextView.setText(appointment.getService());
                 holder.petTypeTextView.setText(appointment.getPetType());
-                holder.cancelButton.setVisibility(isPastAppointments ? View.GONE : View.VISIBLE);
+
             }
         });
 

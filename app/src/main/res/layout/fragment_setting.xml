@@ -35,10 +35,7 @@
             android:textSize="16sp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:entries="@array/start_times"
-
-
-            />
+            android:entries="@array/start_times" />
     </LinearLayout>
 
     <!-- Space between sections -->
@@ -78,6 +75,19 @@
             android:paddingEnd="8dp"/>
     </LinearLayout>
 
+    <!-- New Button -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/updateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upadte"
+        android:gravity="center"
+        android:backgroundTint="#0277BD"
+        app:layout_constraintTop_toBottomOf="@id/endTimeLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
     <!-- Block Dates Layout -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editAppointmentDateLayout"
@@ -85,7 +95,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/endTimeLayout"
+        app:layout_constraintTop_toBottomOf="@id/updateTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8"

@@ -219,7 +219,8 @@ public class HomeFragment extends Fragment {
             public void cancelAppointment(Appointment appointment, int position) {
                 fireBaseManager.removeAppointment(appointment);
                 fireBaseManager.removeAppointmentFromUser(appointment.getIdCustomer(), appointment.getAppointmentId());
-                getAllAppointmentsFromDatabase();
+                userAppointments.remove(appointment);
+                getTheNextappointment();
             }
         });
 

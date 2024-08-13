@@ -143,23 +143,12 @@ public class OnlineAppointmentAdapter extends RecyclerView.Adapter<OnlineAppoint
 
 
     private void showResponseDialog(OnlineAppointment onlineAppointment,int position) {
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_response_to_appointment, null);
-        TextInputEditText editTextResponse = dialogView.findViewById(R.id.editTextResponse);
-        MaterialButton buttonSubmitResponse = dialogView.findViewById(R.id.buttonSubmitResponse);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setView(dialogView)
-                .create();
-
-        buttonSubmitResponse.setOnClickListener(v -> {
-            String response = editTextResponse.getText().toString();
-            if (!response.isEmpty() && responseCallBack != null) {
-                responseCallBack.onResponseToOnlineAppointmentCallBack(response, onlineAppointment,position);
-                dialog.dismiss();
+            if (responseCallBack != null) {
+                responseCallBack.onResponseToOnlineAppointmentCallBack(onlineAppointment,position);
             }
-        });
 
-        dialog.show();
+
     }
 
     @Override

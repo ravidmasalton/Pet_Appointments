@@ -48,7 +48,6 @@ public class AllMessagesToVetFragment extends Fragment {
         findViews();
         getAllOnlineAppointmentsFromDatabase();
         filterAppointmentsButton();
-        isVetLoggedIn();
         return root;
     }
 
@@ -112,6 +111,9 @@ public class AllMessagesToVetFragment extends Fragment {
                 filterAndDisplayAppointments(checkedId);
             }
         });
+
+        isVetLoggedIn();
+
     }
 
     private void setupAdapterAndRecyclerView() {
@@ -138,11 +140,8 @@ public class AllMessagesToVetFragment extends Fragment {
 
                     onlineAppointmentAdapter.setResponseCallBack(new ResponseToOnlineAppointmentCallBack() {
                         @Override
-                        public void onResponseToOnlineAppointmentCallBack(String response, OnlineAppointment onlineAppointment, int position) {
-                            showResponseDialog(response, onlineAppointment);
-                            onlineAppointments.get(position).setActive(false);
-                            filterAndDisplayAppointments(R.id.Pending_appointments_button);
-                            onlineAppointmentAdapter.notifyDataSetChanged();
+                        public void onResponseToOnlineAppointmentCallBack(OnlineAppointment onlineAppointment, int position) {
+                            showResponseDialog(onlineAppointment, position);
                         }
                     });
                 }
@@ -168,13 +167,12 @@ public class AllMessagesToVetFragment extends Fragment {
         });
     }
 
-    private void showResponseDialog(String response, OnlineAppointment onlineAppointment) {
+    private void showResponseDialog(OnlineAppointment onlineAppointment, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Respond to Appointment");
 
         // Set up the input
         final EditText input = new EditText(getContext());
-        input.setText(response); // If there's an existing response, show it
         builder.setView(input);
 
         // Set up the buttons
@@ -184,6 +182,7 @@ public class AllMessagesToVetFragment extends Fragment {
                 if (success) {
                     Toast.makeText(getContext(), "Response saved successfully", Toast.LENGTH_SHORT).show();
                     // Refresh the list to show only pending appointments
+                    onlineAppointments.get(position).setActive(false);
                     filterAndDisplayAppointments(R.id.Pending_appointments_button);
                 } else {
                     Toast.makeText(getContext(), "Failed to save response", Toast.LENGTH_SHORT).show();

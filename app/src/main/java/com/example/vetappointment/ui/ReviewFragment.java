@@ -1,5 +1,6 @@
 package com.example.vetappointment.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -124,13 +125,24 @@ public class ReviewFragment extends Fragment {
                     .setDate(DateKey);
             fireBaseManager.saveReview(review);
 
+            // Show confirmation dialog
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Thank You!")
+                    .setMessage("Your review has been submitted successfully.")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                        // Clear fields after saving
+                        reviewTextView.setText("");
+                        ratingBar.setRating(0);
+                    })
+                    .show();
+
             getAllReviews();
-            reviewTextView.setText("");
-            ratingBar.setRating(0);
             reviews.add(review);
             adapterReview.updateReviews(reviews);
         });
     }
+
 
     public void getUserAndInitView() {
         fireBaseManager.getUser(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<User>() {

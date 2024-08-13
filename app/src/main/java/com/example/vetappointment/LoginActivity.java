@@ -1,5 +1,6 @@
 package com.example.vetappointment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,16 +58,20 @@ public class LoginActivity extends AppCompatActivity {
         setupUI(findViewById(android.R.id.content));
         initUI();
         userRef = FirebaseDatabase.getInstance().getReference("users");
-        auth= FirebaseAuth.getInstance();
-        FirebaseUser user=auth.getCurrentUser();
-        //addDoctorOffice(); // Add the doctor's office to the database only once
-        if(user==null)
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        // addDoctorOffice(); // Add the doctor's office to the database only once
+
+        if (user == null) {
             login();
-        else{
-            prepopulateUserDetails(user);
-            checkUserExistence(user.getUid());
+        } else {
+            checkUserExistence(user);
         }
+
     }
+
+
+
 
     private  void addDoctorOffice() {
         VetManager vetManager = new VetManager();
@@ -115,8 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         if (result.getResultCode() == RESULT_OK && auth.getCurrentUser()!=null) {
             updateUIWithUserDetails(auth.getCurrentUser());
             FirebaseUser user = auth.getCurrentUser();
-            checkUserExistence(user.getUid());
-            prepopulateUserDetails(user);
+            checkUserExistence(user);
 
         } else {
             Toast.makeText(this, "Sign-in cancelled by user.", Toast.LENGTH_SHORT).show();
@@ -130,9 +134,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void prepopulateUserDetails(FirebaseUser user) { // if user details are already saved, prepopulate the fields
+        boolean isDetailsNeeded = false;
         if (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) {
             nameEditText.setText(user.getDisplayName());
             nameEditText.setEnabled(false);
+            isDetailsNeeded = true;
         } else {
             nameEditText.setEnabled(true);
             nameEditText.setFocusable(true);
@@ -141,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             emailEditText.setText(user.getEmail());
             emailEditText.setEnabled(false);
+            isDetailsNeeded = true;
         } else {
             emailEditText.setEnabled(true);
             emailEditText.setFocusable(true);
@@ -150,9 +157,20 @@ public class LoginActivity extends AppCompatActivity {
         if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty()) {
             phoneEditText.setText(user.getPhoneNumber());
             phoneEditText.setEnabled(false);
+            isDetailsNeeded = true;
         } else {
             phoneEditText.setEnabled(true);
             phoneEditText.setFocusable(true);
+        }
+        if (isDetailsNeeded) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Details Needed")
+                    .setMessage("Some details are missing. Please complete the fields.")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        // Just close the dialog
+                        dialog.dismiss();
+                    })
+                    .show();
         }
     }
 
@@ -257,14 +275,15 @@ public class LoginActivity extends AppCompatActivity {
         });
         }
 
-    private void checkUserExistence(String uid) {
+    private void checkUserExistence(FirebaseUser user) {
 
-        DatabaseReference userFromDB = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        DatabaseReference userFromDB = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
 
         userFromDB.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 navigateToMainActivity();
             } else {
+                prepopulateUserDetails(user);
                 Toast.makeText(this, "No such user exists", Toast.LENGTH_SHORT).show();
             }
         });

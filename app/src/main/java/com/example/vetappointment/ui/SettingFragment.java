@@ -1,5 +1,6 @@
 package com.example.vetappointment.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.example.vetappointment.Models.BlockAppointment;
 import com.example.vetappointment.Models.FireBaseManager;
 import com.example.vetappointment.databinding.FragmentSettingBinding;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -43,7 +45,8 @@ public class SettingFragment extends Fragment {
     private TextInputEditText dateText;
     private TextInputEditText reasonText;
     private RecyclerView recyclerView;
-    private MaterialButton submitButton;
+    private ExtendedFloatingActionButton submitButton;
+    private ExtendedFloatingActionButton updateButton;
     private BlockDateAdapter blockDateAdapter;
     private FireBaseManager fireBaseManager = FireBaseManager.getInstance();
     private ArrayList<BlockAppointment> blockAppointments = new ArrayList<>();
@@ -65,38 +68,61 @@ public class SettingFragment extends Fragment {
     }
 
     private void initView() {
+
         submitButton.setOnClickListener(v -> {
             String selectedDate = dateText.getText().toString();
-            String start = startTime.getSelectedItem().toString();
-            String end = endTime.getSelectedItem().toString();
             String reason = reasonText.getText().toString();
 
             if (selectedDate.isEmpty()) {
                 dateText.setError("Please select a date");
                 return;
             }
-            if (start.isEmpty()) {
-                return;
-            }
-            if (end.isEmpty()) {
-                return;
-            }
             if (reason.isEmpty()) {
                 reasonText.setError("Please provide a reason");
                 return;
             }
-            fireBaseManager.updateVetManager(start, end);
-            BlockAppointment blockAppointment = new BlockAppointment(selectedDate, reason);
-            blockAppointment.setBlockDayId(UUID.randomUUID().toString());
-            saveBlockAppointment(blockAppointment);
-            // Clear fields after saving
-            dateText.setText("");
-            reasonText.setText("");
-            blockAppointments.add(blockAppointment);
-            blockDateAdapter.setBlockDates(blockAppointments);
+
+            // Show confirmation dialog before submitting
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm Submission")
+                    .setMessage("Are you sure you want to block this date?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        BlockAppointment blockAppointment = new BlockAppointment(selectedDate, reason);
+                        blockAppointment.setBlockDayId(UUID.randomUUID().toString());
+                        saveBlockAppointment(blockAppointment);
+                        // Clear fields after saving
+                        dateText.setText("");
+                        reasonText.setText("");
+                        blockAppointments.add(blockAppointment);
+                        blockDateAdapter.setBlockDates(blockAppointments);
+                        Toast.makeText(getContext(), "Date blocked successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         });
 
+        updateButton.setOnClickListener(v -> {
+            String start = startTime.getSelectedItem().toString();
+            String end = endTime.getSelectedItem().toString();
+
+            if (start.isEmpty() || end.isEmpty()) {
+                Toast.makeText(getContext(), "Please select both start and end times", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Show confirmation dialog before updating
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Confirm Update")
+                    .setMessage("Are you sure you want to update the working hours?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        fireBaseManager.updateVetManager(start, end);
+                        Toast.makeText(getContext(), "Working hours updated successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
     }
+
 
 
     private void initRecyclerView() {
@@ -261,6 +287,7 @@ public class SettingFragment extends Fragment {
         recyclerView = binding.recyclerViewBlockAppointments;
         reasonText = binding.blockReason;
         submitButton = binding.buttonSubmit;
+        updateButton = binding.updateTime;
     }
 
     @Override
