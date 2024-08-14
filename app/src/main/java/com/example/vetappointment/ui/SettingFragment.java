@@ -67,7 +67,7 @@ public class SettingFragment extends Fragment {
         return root;
     }
 
-    private void initView() {
+    private void initView() { // This method will initialize the views and set up the listeners for the buttons and date picker dialog etc.
 
         submitButton.setOnClickListener(v -> {
             String selectedDate = dateText.getText().toString();
@@ -125,7 +125,7 @@ public class SettingFragment extends Fragment {
 
 
 
-    private void initRecyclerView() {
+    private void initRecyclerView() { // This method will initialize the recycler view and set up the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         blockDateAdapter = new BlockDateAdapter(getContext(), blockAppointments);
         blockDateAdapter.setCancelBlockDateCallBack(new CancelBlockDateCallBack() {
@@ -159,7 +159,7 @@ public class SettingFragment extends Fragment {
         });
     }
 
-    private void initDatePickerAndTime() {
+    private void initDatePickerAndTime() { // This method will initialize the date picker dialog and set up the listeners
         dateText.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -190,7 +190,7 @@ public class SettingFragment extends Fragment {
         });
     }
 
-    private void getAllAppointments() {
+    private void getAllAppointments() { // This method will get all appointments from the database
         fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
 
             @Override
@@ -255,7 +255,7 @@ public class SettingFragment extends Fragment {
         return disabledDaysArray;
     }
 
-    private void setupUI(View view) {
+    private void setupUI(View view) { // This method will set up the touch listener to hide the keyboard when the user touches outside the text box
         // Set up touch listener for non-text box views to hide the keyboard.
         if (!(view instanceof TextInputEditText)) {
             view.setOnTouchListener((v, event) -> {
@@ -273,7 +273,7 @@ public class SettingFragment extends Fragment {
         }
     }
 
-    private void hideKeyboard(View view) {
+    private void hideKeyboard(View view) { // This method will hide the keyboard
         InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

@@ -66,7 +66,7 @@ public class AddNewAppointmentFragment extends Fragment {
         return root;
     }
 
-    private void initDatePickerAndTime() {
+    private void initDatePickerAndTime() { // Initialize the date and time pickers
         appointmentDateEditText.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -103,7 +103,7 @@ public class AddNewAppointmentFragment extends Fragment {
             datePickerDialog.show(getParentFragmentManager(), "Datepickerdialog");
         });
     }
-    private Calendar[] getBlockedDates() {
+    private Calendar[] getBlockedDates() { // Get all blocked dates
         ArrayList<Calendar> blockedDates = new ArrayList<>();
 
         // Add Fridays and Saturdays to blocked dates
@@ -141,7 +141,7 @@ public class AddNewAppointmentFragment extends Fragment {
 
 
 
-    private void getAllBlockAppointments(){
+    private void getAllBlockAppointments(){  // Get all blocked appointments from the database
         fireBaseManager.getAllBlockAppointments(new ListenerBlockAppointmentFromDB() {
 
             @Override
@@ -158,24 +158,10 @@ public class AddNewAppointmentFragment extends Fragment {
     }
 
 
-    private Calendar[] getDisabledDays(Calendar startDate, Calendar endDate) {
-        ArrayList<Calendar> disabledDays = new ArrayList<>();
-        Calendar day = (Calendar) startDate.clone();
-
-        while (day.before(endDate)) {
-            int dayOfWeek = day.get(Calendar.DAY_OF_WEEK);
-            if (dayOfWeek == Calendar.FRIDAY || dayOfWeek == Calendar.SATURDAY) {
-                Calendar disabledDay = (Calendar) day.clone();
-                disabledDays.add(disabledDay);
-            }
-            day.add(Calendar.DAY_OF_MONTH, 1);
-        }
-
-        return disabledDays.toArray(new Calendar[0]);
-    }
 
 
-    private void initTimePicker(String selectedDate) {
+
+    private void initTimePicker(String selectedDate) { // Initialize the time picker based on the selected date
         appointmentTimeEditText.setOnClickListener(v -> {
             final Calendar now = Calendar.getInstance();
             int currentHour = now.get(Calendar.HOUR_OF_DAY);
@@ -230,7 +216,7 @@ public class AddNewAppointmentFragment extends Fragment {
         });
     }
 
-    private void confirmAppointment() {
+    private void confirmAppointment() { // Confirm the appointment and save it to the database
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this.getContext(), "No user found", Toast.LENGTH_SHORT).show();
@@ -248,7 +234,7 @@ public class AddNewAppointmentFragment extends Fragment {
         });
     }
 
-    private void addAppointmentToDB(User user) {
+    private void addAppointmentToDB(User user) { // Add the appointment to the database and show a confirmation dialog
         // Get the input values
         String petType = petTypeEditText.getText().toString();
         String appointmentDate = appointmentDateEditText.getText().toString();
@@ -272,12 +258,12 @@ public class AddNewAppointmentFragment extends Fragment {
         // Save the appointment to the database
 
         fireBaseManager.saveAppointment(appointment);
-        fireBaseManager.saveAppointmentForUser(user, appointment.getAppointmentId());
+        fireBaseManager.saveAppointmentForUser(user, appointment.getAppointmentId()); // Save the appointment to the user's appointments
         showAlert("Appointment Confirmed", "Your appointment has been confirmed", this::navigateToHome);
 
     }
 
-    private void getAllAppointments() {
+    private void getAllAppointments() { // Get all appointments from the database and store them in allAppointments
         fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
             @Override
             public void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments) {
@@ -293,12 +279,12 @@ public class AddNewAppointmentFragment extends Fragment {
         });
     }
 
-    private void navigateToHome() {
+    private void navigateToHome() { // Navigate to the home screen
         Intent intent = new Intent(this.getContext(), MainActivity.class);
         startActivity(intent);
     }
 
-    private void showAlert(String title, String message, Runnable onDismiss) {
+    private void showAlert(String title, String message, Runnable onDismiss) { // Show an alert dialog
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
@@ -308,7 +294,7 @@ public class AddNewAppointmentFragment extends Fragment {
     }
 
 
-    private void getVetManager(){
+    private void getVetManager(){ // Get the VetManager from the database and store the start and end times
         fireBaseManager.getVetManager(new FireBaseManager.CallBack<VetManager>() {
             @Override
             public void res(VetManager vetManager) {

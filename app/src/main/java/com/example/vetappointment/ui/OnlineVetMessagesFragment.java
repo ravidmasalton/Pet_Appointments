@@ -46,7 +46,7 @@ public class OnlineVetMessagesFragment extends Fragment {
                 if (uri != null) {
                     updateImageUrl(uri);
                 }
-            });
+            }); // Register the activity result launcher for picking an image from the gallery
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -64,24 +64,24 @@ public class OnlineVetMessagesFragment extends Fragment {
         return root;
     }
 
-    private void findViews() {
+    private void findViews() { // Find the views by their IDs
         editTextUser = binding.messageInput;
         uploadImageButton = binding.petIMGFromUser;
         submitButton = binding.sendButton;
     }
 
-    private void editImage() {
+    private void editImage() { // Launch the activity to pick an image from the gallery
         pickMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                 .build());
     }
 
-    private void updateImageUrl(Uri uri) {
+    private void updateImageUrl(Uri uri) { // Update the image URI and set the image to the image view
         imageUri = uri;
         uploadImageButton.setImageURI(uri);
     }
 
-    private void saveOnlineAppointment() {
+    private void saveOnlineAppointment() { // Save the online appointment
         String message = editTextUser.getText().toString().trim();
 
         if (message.isEmpty()) {
@@ -106,7 +106,7 @@ public class OnlineVetMessagesFragment extends Fragment {
         navigateToHome();
     }
 
-    private void navigateToHome() {
+    private void navigateToHome() { // Navigate to the main activity
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) {
@@ -114,7 +114,7 @@ public class OnlineVetMessagesFragment extends Fragment {
         }
     }
 
-    private void setupUI(View view) {
+    private void setupUI(View view) { // Set up the UI to hide the keyboard when the user taps outside the text boxes
         // Set up a touch listener to close the keyboard when the user taps outside the text boxes
         if (!(view instanceof EditText)) {
             view.setOnTouchListener((v, event) -> {
@@ -124,7 +124,7 @@ public class OnlineVetMessagesFragment extends Fragment {
         }
 
         // If a layout container, iterate over children and apply the touch listener
-        if (view instanceof ViewGroup) {
+        if (view instanceof ViewGroup) { // If the view is a ViewGroup, iterate over its children and apply the touch listener
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View innerView = ((ViewGroup) view).getChildAt(i);
                 setupUI(innerView);
@@ -132,7 +132,7 @@ public class OnlineVetMessagesFragment extends Fragment {
         }
     }
 
-    private void hideKeyboard(View view) {
+    private void hideKeyboard(View view) { // Hide the keyboard
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

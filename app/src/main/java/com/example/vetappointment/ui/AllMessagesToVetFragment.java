@@ -46,12 +46,12 @@ public class AllMessagesToVetFragment extends Fragment {
         View root = binding.getRoot();
         auth = FirebaseAuth.getInstance();
         findViews();
-        getAllOnlineAppointmentsFromDatabase();
+        getAllOnlineAppointmentsOfUserFromDatabase();
         filterAppointmentsButton();
         return root;
     }
 
-    private void getAllOnlineAppointmentsFromDatabase() {
+    private void getAllOnlineAppointmentsOfUserFromDatabase() { // Get all online appointments of the user from the database
         String userId = auth.getCurrentUser().getUid();
         firebaseManager.getAllOnlineAppointmentsForUser(userId, new ListenerGetAllOnlineAppointmentFromDB() {
             @Override
@@ -68,16 +68,16 @@ public class AllMessagesToVetFragment extends Fragment {
         });
     }
 
-    public void getAllOnlineAppointments(ArrayList<OnlineAppointment> appointments) {
+    public void getAllOnlineAppointments(ArrayList<OnlineAppointment> appointments) { // Get all online appointments of the user from the database
         onlineAppointments.clear();
         onlineAppointments.addAll(appointments);
     }
 
-    private void filterAppointmentsButton() {
+    private void filterAppointmentsButton() { // Filter appointments by date
         edit_date_filter.setOnClickListener(v -> filterAppointmentsByDate());
     }
 
-    private void filterAppointmentsByDate() {
+    private void filterAppointmentsByDate() {// Filter appointments by date
         if (onlineAppointmentAdapter.getItemCount() == 0)
             return;
         ArrayList<OnlineAppointment> currentAllAppointments = new ArrayList<>();
@@ -86,7 +86,7 @@ public class AllMessagesToVetFragment extends Fragment {
         onlineAppointmentAdapter.updateOnlineAppointments(currentAllAppointments);
     }
 
-    private void filterAndDisplayAppointments(int checkedId) {
+    private void filterAndDisplayAppointments(int checkedId) { // Filter appointments by status (pending/completed)
         ArrayList<OnlineAppointment> filteredOnlineAppointments = new ArrayList<>();
         if (checkedId == R.id.Pending_appointments_button) {
             for (OnlineAppointment appointment : onlineAppointments) {
@@ -105,7 +105,7 @@ public class AllMessagesToVetFragment extends Fragment {
         onlineAppointmentAdapter.updateOnlineAppointments(filteredOnlineAppointments);
     }
 
-    private void setupToggleButtons() {
+    private void setupToggleButtons() { // Setup the toggle buttons for filtering appointments
         toggleButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 filterAndDisplayAppointments(checkedId);
@@ -116,7 +116,7 @@ public class AllMessagesToVetFragment extends Fragment {
 
     }
 
-    private void setupAdapterAndRecyclerView() {
+    private void setupAdapterAndRecyclerView() { // Setup the adapter and recycler view for displaying appointments
         onlineAppointmentAdapter = new OnlineAppointmentAdapter(getContext(), onlineAppointments);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -131,7 +131,7 @@ public class AllMessagesToVetFragment extends Fragment {
         edit_date_filter = binding.dateFilterText;
     }
 
-    private void isVetLoggedIn() {
+    private void isVetLoggedIn() { // Check if the user is a veterinarian
         firebaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
             @Override
             public void res(Boolean res) {
@@ -149,7 +149,7 @@ public class AllMessagesToVetFragment extends Fragment {
         });
     }
 
-    private void getAllOnlineAppointments() {
+    private void getAllOnlineAppointments() { // Get all online appointments from the database (for veterinarians)
         firebaseManager.getAllOnlineAppointments(new ListenerGetAllOnlineAppointmentFromDB() {
             @Override
             public void onOnlineAppointmentFromDBLoadSuccess(ArrayList<OnlineAppointment> appointments) {
@@ -167,7 +167,7 @@ public class AllMessagesToVetFragment extends Fragment {
         });
     }
 
-    private void showResponseDialog(OnlineAppointment onlineAppointment, int position) {
+    private void showResponseDialog(OnlineAppointment onlineAppointment, int position) { // Show a dialog for the veterinarian to respond to an appointment
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Respond to Appointment");
 

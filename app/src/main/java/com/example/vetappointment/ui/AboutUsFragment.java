@@ -58,7 +58,7 @@ public class AboutUsFragment extends Fragment {
         phoneButton = binding.buttonPhone;
     }
 
-    private void getVetManager() {
+    private void getVetManager() { // get the vet manager information from the database
         fireBaseManager.getVetManager(new FireBaseManager.CallBack<VetManager>() {
             @Override
             public void res(VetManager res) {
@@ -71,14 +71,14 @@ public class AboutUsFragment extends Fragment {
         });
     }
 
-    private void navigateToMaps() {
+    private void navigateToMaps() { // navigate to the address of the vet
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(addressTextView.getText().toString()));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
 
-    private void callToPhone() {
+    private void callToPhone() { // call to the phone number of the vet
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);

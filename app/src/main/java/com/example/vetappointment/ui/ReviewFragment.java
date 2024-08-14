@@ -69,7 +69,7 @@ public class ReviewFragment extends Fragment {
         titleTextView = binding.titleTextView;
     }
 
-    private void updateAdapterAndRecyclerView() {
+    private void updateAdapterAndRecyclerView() { // Update the adapter and recycler view with the new data from the database
         adapterReview = new ReviewAdapter(getContext(), reviews);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -77,7 +77,7 @@ public class ReviewFragment extends Fragment {
         recycler_view_reviews.setAdapter(adapterReview);
     }
 
-    private void calculateAverageRating() {
+    private void calculateAverageRating() { // Calculate and display the average rating from the reviews
         float totalRating = 0;
         for (Review review : reviews) {
             totalRating += review.getRating();
@@ -86,7 +86,7 @@ public class ReviewFragment extends Fragment {
         overallRatingTextView.setText("Overall Rating: " + String.format("%.1f", averageRating));
     }
 
-    private void getAllReviews() {
+    private void getAllReviews() { // Get all reviews from the database and update the adapter and recycler view
         fireBaseManager.getAllReviews(new ListenerGetAllReviewFromDB() {
             @Override
             public void onReviewFromDBLoadSuccess(ArrayList<Review> appointments) {
@@ -105,7 +105,7 @@ public class ReviewFragment extends Fragment {
         });
     }
 
-    private void initViews(User user) {
+    private void initViews(User user) { // Initialize the views and set up the click listener for the submit button
         addReviewButton.setOnClickListener(v -> {
             String userName = user.getName();
             String reviewText = reviewTextView.getText().toString();
@@ -144,7 +144,7 @@ public class ReviewFragment extends Fragment {
     }
 
 
-    public void getUserAndInitView() {
+    public void getUserAndInitView() { // Get the user from the database and initialize the views
         fireBaseManager.getUser(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<User>() {
             @Override
             public void res(User user) {
@@ -157,7 +157,7 @@ public class ReviewFragment extends Fragment {
         });
     }
 
-    private void isVetLoggedIn() {
+    private void isVetLoggedIn() { // Check if the user is a veterinarian and hide/show the appropriate views
         fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
             @Override
             public void res(Boolean isVet) {
@@ -178,7 +178,7 @@ public class ReviewFragment extends Fragment {
         });
     }
 
-    private void setupUI(View view) {
+    private void setupUI(View view) { // Set up a touch listener to hide the keyboard when the user taps outside the text boxes
         // Set up a touch listener to close the keyboard when the user taps outside the text boxes
         if (!(view instanceof MaterialAutoCompleteTextView)) {
             view.setOnTouchListener((v, event) -> {
@@ -196,7 +196,7 @@ public class ReviewFragment extends Fragment {
         }
     }
 
-    private void hideKeyboard(View view) {
+    private void hideKeyboard(View view) { // Hide the keyboard
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

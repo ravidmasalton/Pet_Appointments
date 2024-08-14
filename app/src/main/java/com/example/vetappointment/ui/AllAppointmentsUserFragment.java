@@ -55,7 +55,7 @@ public class AllAppointmentsUserFragment extends Fragment {
         return root;
     }
 
-    private void getAllAppointmentsFromDatabase() {
+    private void getAllAppointmentsFromDatabase() { // Get all appointments from the database and filter the ones that belong to the current user
         fireBaseManager.getAllAppointments(new ListenerGetAllAppointmentFromDB() {
             @Override
             public void onAppointmentFromDBLoadSuccess(ArrayList<Appointment> appointments) {
@@ -82,7 +82,7 @@ public class AllAppointmentsUserFragment extends Fragment {
 
     }
 
-    private void setupAdapterAndRecyclerView() {
+    private void setupAdapterAndRecyclerView() { // Setup the adapter and recycler view for the appointments list and display the future appointments
         appointmentAdapter = new AppointmentAdapter(getContext(), userAppointments, false);
         appointmentAdapter.setAppointmentCallBack(new CancelAppointmentCallback() {
             @Override
@@ -103,7 +103,7 @@ public class AllAppointmentsUserFragment extends Fragment {
         recycler_view_appointments.setAdapter(appointmentAdapter);
     }
 
-    private void filterAndDisplayAppointments(int checkedId) {
+    private void filterAndDisplayAppointments(int checkedId) { // Filter the appointments based on the selected toggle button and display them
         ArrayList<Appointment> filteredAppointments = new ArrayList<>();
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -130,7 +130,7 @@ public class AllAppointmentsUserFragment extends Fragment {
     }
 
 
-    private void setupToggleButtons() {
+    private void setupToggleButtons() { // Setup the toggle buttons to filter the appointments
         toggleButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 filterAndDisplayAppointments(checkedId);
@@ -153,16 +153,27 @@ public class AllAppointmentsUserFragment extends Fragment {
         });
     }
 
-    private void filterAppointmentsByDate() {
-        ArrayList<Appointment>currentAllAppointments =appointmentAdapter.getAllappointments();
-        Collections.sort(currentAllAppointments);
-        appointmentAdapter.updateAppointments(currentAllAppointments,appointmentAdapter.getIsPastAppointments());
-
+    private void filterAppointmentsByDate() { // Sort the appointments by date and time
+        ArrayList<Appointment> currentAllAppointments = new ArrayList<>(appointmentAdapter.getAllappointments());
+        Collections.sort(currentAllAppointments, (a1, a2) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            try {
+                Date date1 = sdf.parse(a1.getDate() + " " + a1.getTime());
+                Date date2 = sdf.parse(a2.getDate() + " " + a2.getTime());
+                if (date1 != null && date2 != null) {
+                    return date1.compareTo(date2);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+        appointmentAdapter.updateAppointments(currentAllAppointments, appointmentAdapter.getIsPastAppointments());
     }
 
 
 
-    private void isVetLoaded() {
+    private void isVetLoaded() { // Check if the current user is a veterinarian and display all appointments if they are
         fireBaseManager.isVeterinarian(auth.getCurrentUser().getUid(), new FireBaseManager.CallBack<Boolean>() {
             @Override
             public void res(Boolean res) {
