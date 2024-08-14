@@ -16,12 +16,13 @@ Overview
 - **Home Page:** The home page displays upcoming appointments, And a number of messages that are still waiting to be answered by a veterinarian,ensuring pet owners have all the necessary information at a glance.
 - **Appointment Booking:** Pet owners can view available appointment slots, select a time that suits them, and book appointments directly through the app.
 - **Appointment Management:** Users can view, reschedule, or cancel their appointments with ease.
+- **Add new message:** user can add message with the added functionality of uploading a photo to give context to the message.
 - **No Double Booking:** The system ensures that pet owners cannot book more than one appointment in the same time slot, avoiding scheduling conflicts.
 - **Review and Rating:** Pet owners can leave reviews and rate the services provided by veterinarians, helping other users make informed decisions.
 - **Navigation and Communication:** The app includes features for navigating to the clinic using Google Maps or directly calling the veterinarian's office.
 
 ### For Veterinarians
-- **Appointment Management:** Veterinarians can view all past and future appointments, access detailed customer and pet information, and filter appointments by date.
+- **Appointment Management:** Veterinarians can view all past and future appointments and filter appointments by date.
 - **Availability Management:** Veterinarians can block out days or specific times when they are unavailable, provided no appointments are already scheduled for those times.
 - **Respond to Messages:** Veterinarians can directly communicate with pet owners through the app, responding to inquiries.
 - **Appointment Status Tracking:** Veterinarians can update the status of appointments (e.g., completed, pending, or canceled) in real time, providing transparency and clarity to pet owners.
