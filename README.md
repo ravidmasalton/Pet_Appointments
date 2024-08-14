@@ -159,7 +159,7 @@ The "Add New Message" page is designed to help pet owners easily initiate commun
 The "View All Messages" page allows users to keep track of their communication with the veterinary clinic. It is designed to provide a clear overview of all messages, their statuses, and detailed content for easy management and follow-up.
 
 For Pet Owners:
-Message Overview: Pet owners can view all their messages in one place, with clear indicators for the status of each message (e.g., Pending, Responded, Completed).
+Message Overview: Pet owners can view all their messages in one place, with clear indicators for the status of each message (e.g., Pending, Completed).
 Message Details: Clicking on a message will display the full content, including any responses from the veterinarian.
 Status Tracking: Pet owners can see which messages have been responded to by the veterinarian and which are still awaiting a reply.
 For Veterinarians:
