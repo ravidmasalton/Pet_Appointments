@@ -73,9 +73,14 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 ## Screenshots and Explanations
 
 
+
 ### Login Page
 The Login Page allows users to sign in using their preferred authentication method, whether it be email/password, SMS verification, or Google account.
 ![login](https://github.com/user-attachments/assets/abbdca15-1904-4e8a-ba34-df07e8af29f6)
+
+
+
+
 
 
 
@@ -87,9 +92,18 @@ The Details Page provides in-depth information about a specific appointment, pet
 
 
 
+
+
+
+
 ### Home Page
 The Home Page provides an overview of upcoming appointments, notifications for pending messages, and the overall rating of the veterinarian.
 ![home page](https://github.com/user-attachments/assets/d79e5a7d-7970-446e-81b8-cb794c0f3d90)
+
+
+
+
+
 
 
 
@@ -99,18 +113,41 @@ The Menu Page provides easy navigation to different sections of the app, includi
 
 
 
+
+
+
+
+
+
 ### Appointment Booking Page
 The Appointment Booking Page allows pet owners to view available time slots and book an appointment at their convenience.
 ![Added a new appointment](https://github.com/user-attachments/assets/c862fc4d-525d-4d2f-b0fe-49e6a26b0d48)
+
+
+
+
+
+
 
 ### Appointment Management Page
 On this page, users can view all their appointments, reschedule or cancel them easily.
 ![all the appointment](https://github.com/user-attachments/assets/9c509e79-fa8e-4876-ae0d-7cd113270eab)
 
 
+
+
+
+
+
+
+
 ### new messages with image 
 The "Add New Message" page is designed to help pet owners easily initiate communication with their veterinarian. This page provides an intuitive interface for composing new messages, with the added functionality of uploading a photo to give context to the message.
 ![Added a new message to the vet](https://github.com/user-attachments/assets/5cfd05db-40fb-4291-a203-8727b1d9b367)
+
+
+
+
 
 
 
@@ -129,8 +166,17 @@ Respond to Messages: Veterinarians can reply to any message directly from this p
 
 ![All messages](https://github.com/user-attachments/assets/5cb827be-1ebc-4607-a586-e10a3e42ceef)
 
+
+
+
+
+
 ## for Veterinarians ##
 ![The veterinarian's response to the message](https://github.com/user-attachments/assets/f574e948-2987-40de-a45a-c2b1f33092f8)
+
+
+
+
 
 
 
@@ -140,9 +186,17 @@ The "Veterinarian's Setting" page allows veterinarians to manage their availabil
 
 
 
+
+
+
+
 ### Reviews and Ratings Page
 Pet owners can leave reviews and rate the services provided by veterinarians, helping others make informed decisions.
 ![Writing a review](https://github.com/user-attachments/assets/1afd4d7b-d21b-4596-8e4c-0920ae8d9dba)
+
+
+
+
 
 
 
@@ -152,8 +206,19 @@ The "View All Reviews" page displays customer feedback and ratings for the veter
 
 
 
+
+
+
+
+
+
 ### About Us Page
 The About Us Page offers details about the clinic, including contact information, location, and a brief overview of the services offered.
 ![about us](https://github.com/user-attachments/assets/a1400a6e-b8ad-41f6-bdee-ef81dd10b700)
+
+
+
+
+
 
 This README gives a comprehensive overview of the VetAppointment project, covering its features, technology stack, application flow, and future enhancements.
