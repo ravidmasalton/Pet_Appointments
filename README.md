@@ -78,39 +78,82 @@ The Login Page allows users to sign in using their preferred authentication meth
 ![login](https://github.com/user-attachments/assets/abbdca15-1904-4e8a-ba34-df07e8af29f6)
 
 
-### Home Page
-The Home Page provides an overview of upcoming appointments, notifications for pending messages, and the overall rating of the veterinarian.
-![Home Page](images/home_page.png)
-
-### Appointment Booking Page
-The Appointment Booking Page allows pet owners to view available time slots and book an appointment at their convenience.
-![Appointment Booking](images/booking_page.png)
-
-### Appointment Management Page
-On this page, users can view all their appointments, reschedule or cancel them easily.
-![Appointment Management](images/appointment_management.png)
-
-### Veterinarian's Dashboard
-Veterinarians can view and manage all appointments, block unavailable times, and respond to messages from pet owners.
-![Veterinarian Dashboard](images/vet_dashboard.png)
-
-### Reviews and Ratings Page
-Pet owners can leave reviews and rate the services provided by veterinarians, helping others make informed decisions.
-![Reviews and Ratings](images/reviews_page.png)
-
 
 ### Details Page
 The Details Page provides in-depth information about a specific appointment, pet, or service, depending on the context within the app.
-![Details Page](images/details_page.png)
+![Filling in personal details](https://github.com/user-attachments/assets/ee8b2313-7598-48db-8cfe-099761f5ee78)
+
+
+
+
+
+### Home Page
+The Home Page provides an overview of upcoming appointments, notifications for pending messages, and the overall rating of the veterinarian.
+![home page](https://github.com/user-attachments/assets/d79e5a7d-7970-446e-81b8-cb794c0f3d90)
+
+
+
+### Menu Page
+The Menu Page provides easy navigation to different sections of the app, including booking appointments, viewing messages, managing profiles, and more.
+![menu](https://github.com/user-attachments/assets/777af7fc-9626-4bc3-96c8-30c22ab0023b)
+
+
+
+### Appointment Booking Page
+The Appointment Booking Page allows pet owners to view available time slots and book an appointment at their convenience.
+![Added a new appointment](https://github.com/user-attachments/assets/c862fc4d-525d-4d2f-b0fe-49e6a26b0d48)
+
+### Appointment Management Page
+On this page, users can view all their appointments, reschedule or cancel them easily.
+![all the appointment](https://github.com/user-attachments/assets/9c509e79-fa8e-4876-ae0d-7cd113270eab)
+
+
+### new messages with image 
+The "Add New Message" page is designed to help pet owners easily initiate communication with their veterinarian. This page provides an intuitive interface for composing new messages, with the added functionality of uploading a photo to give context to the message.
+![Added a new message to the vet](https://github.com/user-attachments/assets/5cfd05db-40fb-4291-a203-8727b1d9b367)
+
+
+
+
+### View All Messages Page
+The "View All Messages" page allows users to keep track of their communication with the veterinary clinic. It is designed to provide a clear overview of all messages, their statuses, and detailed content for easy management and follow-up.
+
+For Pet Owners:
+Message Overview: Pet owners can view all their messages in one place, with clear indicators for the status of each message (e.g., Pending, Responded, Completed).
+Message Details: Clicking on a message will display the full content, including any responses from the veterinarian.
+Status Tracking: Pet owners can see which messages have been responded to by the veterinarian and which are still awaiting a reply.
+For Veterinarians:
+Message Management: Veterinarians can view all incoming messages from pet owners.
+ Veterinarians can see all incoming messages from pet owners that are still awaiting a response.
+Respond to Messages: Veterinarians can reply to any message directly from this page. Once a response is sent, the message's status is updated to "Completed."
+
+![All messages](https://github.com/user-attachments/assets/5cb827be-1ebc-4607-a586-e10a3e42ceef)
+
+## for Veterinarians ##
+![The veterinarian's response to the message](https://github.com/user-attachments/assets/f574e948-2987-40de-a45a-c2b1f33092f8)
+
+
+
+### Veterinarian's Setting Page
+The "Veterinarian's Setting" page allows veterinarians to manage their availability. They can view and block unavailable times, add new block times, and update the clinic's start and end times to ensure accurate appointment scheduling.
+![settings](https://github.com/user-attachments/assets/b7c404b8-b47b-4420-964f-35ed4b4d8787)
+
+
+
+### Reviews and Ratings Page
+Pet owners can leave reviews and rate the services provided by veterinarians, helping others make informed decisions.
+![Writing a review](https://github.com/user-attachments/assets/1afd4d7b-d21b-4596-8e4c-0920ae8d9dba)
+
+
+
+## View All Reviews Page
+The "View All Reviews" page displays customer feedback and ratings for the veterinary services. Pet owners can browse through all the reviews left by other users, helping them make informed decisions. Veterinarians can also monitor reviews to improve their services.
+![All reviews](https://github.com/user-attachments/assets/e91bddd8-cb07-45d3-9a63-fa7a11fef3bb)
+
+
 
 ### About Us Page
 The About Us Page offers details about the clinic, including contact information, location, and a brief overview of the services offered.
-![About Us Page](images/about_us_page.png)
-
-### All Messages Page
-The All Messages Page allows users to view all messages exchanged with the veterinarian, including both answered and pending inquiries.
-![All Messages Page](images/all_messages_page.png)
-
-
+![about us](https://github.com/user-attachments/assets/a1400a6e-b8ad-41f6-bdee-ef81dd10b700)
 
 This README gives a comprehensive overview of the VetAppointment project, covering its features, technology stack, application flow, and future enhancements.
