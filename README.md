@@ -76,6 +76,7 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 
 ### Login Page
 The Login Page allows users to sign in using their preferred authentication method, whether it be email/password, SMS verification, or Google account.
+
 ![login](https://github.com/user-attachments/assets/abbdca15-1904-4e8a-ba34-df07e8af29f6)
 
 
@@ -86,6 +87,7 @@ The Login Page allows users to sign in using their preferred authentication meth
 
 ### Details Page
 The Details Page provides in-depth information about a specific appointment, pet, or service, depending on the context within the app.
+
 ![Filling in personal details](https://github.com/user-attachments/assets/ee8b2313-7598-48db-8cfe-099761f5ee78)
 
 
@@ -98,6 +100,7 @@ The Details Page provides in-depth information about a specific appointment, pet
 
 ### Home Page
 The Home Page provides an overview of upcoming appointments, notifications for pending messages, and the overall rating of the veterinarian.
+
 ![home page](https://github.com/user-attachments/assets/d79e5a7d-7970-446e-81b8-cb794c0f3d90)
 
 
@@ -109,11 +112,12 @@ The Home Page provides an overview of upcoming appointments, notifications for p
 
 ### Menu Page
 The Menu Page provides easy navigation to different sections of the app, including booking appointments, viewing messages, managing profiles, and more.
-![menu](https://github.com/user-attachments/assets/777af7fc-9626-4bc3-96c8-30c22ab0023b)
 
 
-
-
+## for Veterinarian ##
+![menu](https://github.com/user-attachments/assets/777af7fc-9626-4bc3-96c8-30c22ab0023b)   
+## for pet owner ## 
+![menu2](https://github.com/user-attachments/assets/44563ff8-0c16-4f9c-b0e7-52f42c4be1e2)
 
 
 
@@ -121,6 +125,7 @@ The Menu Page provides easy navigation to different sections of the app, includi
 
 ### Appointment Booking Page
 The Appointment Booking Page allows pet owners to view available time slots and book an appointment at their convenience.
+
 ![Added a new appointment](https://github.com/user-attachments/assets/c862fc4d-525d-4d2f-b0fe-49e6a26b0d48)
 
 
@@ -131,18 +136,15 @@ The Appointment Booking Page allows pet owners to view available time slots and 
 
 ### Appointment Management Page
 On this page, users can view all their appointments, reschedule or cancel them easily.
+
 ![all the appointment](https://github.com/user-attachments/assets/9c509e79-fa8e-4876-ae0d-7cd113270eab)
-
-
-
-
-
 
 
 
 
 ### new messages with image 
 The "Add New Message" page is designed to help pet owners easily initiate communication with their veterinarian. This page provides an intuitive interface for composing new messages, with the added functionality of uploading a photo to give context to the message.
+
 ![Added a new message to the vet](https://github.com/user-attachments/assets/5cfd05db-40fb-4291-a203-8727b1d9b367)
 
 
@@ -169,8 +171,6 @@ Respond to Messages: Veterinarians can reply to any message directly from this p
 
 
 
-
-
 ## for Veterinarians ##
 ![The veterinarian's response to the message](https://github.com/user-attachments/assets/f574e948-2987-40de-a45a-c2b1f33092f8)
 
@@ -182,6 +182,7 @@ Respond to Messages: Veterinarians can reply to any message directly from this p
 
 ### Veterinarian's Setting Page
 The "Veterinarian's Setting" page allows veterinarians to manage their availability. They can view and block unavailable times, add new block times, and update the clinic's start and end times to ensure accurate appointment scheduling.
+
 ![settings](https://github.com/user-attachments/assets/b7c404b8-b47b-4420-964f-35ed4b4d8787)
 
 
@@ -192,6 +193,7 @@ The "Veterinarian's Setting" page allows veterinarians to manage their availabil
 
 ### Reviews and Ratings Page
 Pet owners can leave reviews and rate the services provided by veterinarians, helping others make informed decisions.
+
 ![Writing a review](https://github.com/user-attachments/assets/1afd4d7b-d21b-4596-8e4c-0920ae8d9dba)
 
 
@@ -202,6 +204,7 @@ Pet owners can leave reviews and rate the services provided by veterinarians, he
 
 ## View All Reviews Page
 The "View All Reviews" page displays customer feedback and ratings for the veterinary services. Pet owners can browse through all the reviews left by other users, helping them make informed decisions. Veterinarians can also monitor reviews to improve their services.
+
 ![All reviews](https://github.com/user-attachments/assets/e91bddd8-cb07-45d3-9a63-fa7a11fef3bb)
 
 
@@ -214,6 +217,7 @@ The "View All Reviews" page displays customer feedback and ratings for the veter
 
 ### About Us Page
 The About Us Page offers details about the clinic, including contact information, location, and a brief overview of the services offered.
+
 ![about us](https://github.com/user-attachments/assets/a1400a6e-b8ad-41f6-bdee-ef81dd10b700)
 
 
