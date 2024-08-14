@@ -75,8 +75,7 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 
 ### Login Page
 The Login Page allows users to sign in using their preferred authentication method, whether it be email/password, SMS verification, or Google account.
-![Login Page](images/login.png)
-
+![login](https://github.com/user-attachments/assets/abbdca15-1904-4e8a-ba34-df07e8af29f6)
 
 
 ### Home Page
