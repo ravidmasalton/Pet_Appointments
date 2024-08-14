@@ -1,12 +1,11 @@
 
-VetAppointment
+## ***VetAppointment*** ##
 
 Overview
 **VetAppointment** is an Android application designed to streamline the process of booking and managing veterinary appointments. This application provides a user-friendly platform for both pet owners and veterinarians, leveraging Firebase for secure data handling, authentication, and real-time updates.
 
 ## Features
 
-### General
 - **Firebase Integration:** All data, including user profiles, appointments, and messages, are securely stored and managed in real-time using Firebase Realtime Database and Firebase Firestore.
 - **Dual Account Types:** The app supports two distinct user roles—Pet Owners and Veterinarians—each with tailored functionalities.
 - **Material Design:** The app follows Google's Material Design principles, offering a clean, intuitive, and responsive user interface.
@@ -72,6 +71,6 @@ Overview
 ## Contributing
 Contributions are welcome! Feel free to fork the repository and submit pull requests.
 
----
+
 
 This README gives a comprehensive overview of the VetAppointment project, covering its features, technology stack, application flow, and future enhancements.
