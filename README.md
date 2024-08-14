@@ -70,6 +70,47 @@ Overview
 
 ## Contributing
 Contributions are welcome! Feel free to fork the repository and submit pull requests.
+## Screenshots and Explanations
+
+
+### Login Page
+The Login Page allows users to sign in using their preferred authentication method, whether it be email/password, SMS verification, or Google account.
+![Login Page](images/login.png)
+
+
+
+### Home Page
+The Home Page provides an overview of upcoming appointments, notifications for pending messages, and the overall rating of the veterinarian.
+![Home Page](images/home_page.png)
+
+### Appointment Booking Page
+The Appointment Booking Page allows pet owners to view available time slots and book an appointment at their convenience.
+![Appointment Booking](images/booking_page.png)
+
+### Appointment Management Page
+On this page, users can view all their appointments, reschedule or cancel them easily.
+![Appointment Management](images/appointment_management.png)
+
+### Veterinarian's Dashboard
+Veterinarians can view and manage all appointments, block unavailable times, and respond to messages from pet owners.
+![Veterinarian Dashboard](images/vet_dashboard.png)
+
+### Reviews and Ratings Page
+Pet owners can leave reviews and rate the services provided by veterinarians, helping others make informed decisions.
+![Reviews and Ratings](images/reviews_page.png)
+
+
+### Details Page
+The Details Page provides in-depth information about a specific appointment, pet, or service, depending on the context within the app.
+![Details Page](images/details_page.png)
+
+### About Us Page
+The About Us Page offers details about the clinic, including contact information, location, and a brief overview of the services offered.
+![About Us Page](images/about_us_page.png)
+
+### All Messages Page
+The All Messages Page allows users to view all messages exchanged with the veterinarian, including both answered and pending inquiries.
+![All Messages Page](images/all_messages_page.png)
 
 
 
