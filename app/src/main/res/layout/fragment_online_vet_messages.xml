@@ -18,8 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        android:gravity="center"/>
+        android:gravity="center" />
 
     <!-- Message EditText -->
     <com.google.android.material.textfield.TextInputLayout
@@ -37,9 +36,9 @@
             android:id="@+id/message_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Write your message here and upload a photo "
+            android:hint="Write your message here and upload a photo"
             android:lines="6"
-            android:minHeight="150dp"/>
+            android:minHeight="150dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Photo Preview ImageView -->
@@ -52,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        app:srcCompat="@drawable/image"/>
+        app:srcCompat="@drawable/image" />
 
     <!-- Send Button -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -64,5 +63,22 @@
         app:layout_constraintTop_toBottomOf="@id/pet_IMG_from_user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginTop="30dp" />
+
+    <!-- ProgressBar for loading -->
+    <FrameLayout
+        android:id="@+id/progress_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        android:layout_gravity="center" />
+</FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

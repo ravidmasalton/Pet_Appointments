@@ -186,12 +186,12 @@ public class HomeFragment extends Fragment {
                     return 0;
                 }
             });
-            userAppointments.clear();
-            userAppointments.add(filteredAppointments.get(0));
-            appointmentAdapter.updateAppointments(userAppointments, appointmentAdapter.getIsPastAppointments());
+            ArrayList<Appointment> updateUserAppointments = new ArrayList<>();
+            updateUserAppointments.add(filteredAppointments.get(0));
+            appointmentAdapter.updateAppointments(updateUserAppointments, appointmentAdapter.getIsPastAppointments());
         } else {
-            userAppointments.clear();
-            appointmentAdapter.updateAppointments(userAppointments, appointmentAdapter.getIsPastAppointments());
+            ArrayList<Appointment> updateUserAppointments = new ArrayList<>();
+            appointmentAdapter.updateAppointments(updateUserAppointments, appointmentAdapter.getIsPastAppointments());
             titleYourNextAppointment.setText("You have no upcoming appointments");
         }
 

@@ -68,9 +68,7 @@ public class AllAppointmentsUserFragment extends Fragment {
                 }
 
                 setupAdapterAndRecyclerView();
-                // Automatically show future appointments when the page opens
-                setupToggleButtons();
-                toggleButtonGroup.check(R.id.future_appointments_button);
+
 
             }
 
@@ -101,6 +99,7 @@ public class AllAppointmentsUserFragment extends Fragment {
 
         recycler_view_appointments.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler_view_appointments.setAdapter(appointmentAdapter);
+        setupToggleButtons();
     }
 
     private void filterAndDisplayAppointments(int checkedId) { // Filter the appointments based on the selected toggle button and display them
@@ -136,6 +135,9 @@ public class AllAppointmentsUserFragment extends Fragment {
                 filterAndDisplayAppointments(checkedId);
             }
         });
+
+        toggleButtonGroup.check(R.id.future_appointments_button);
+
     }
 
     private void findViews() {

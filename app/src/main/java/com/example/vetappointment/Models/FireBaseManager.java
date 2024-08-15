@@ -203,21 +203,37 @@ public class FireBaseManager {
 
     }
 
-    public void saveOnlineAppointment(OnlineAppointment onlineAppointment, Uri uri) { // Save online appointment
-
-
-        uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
-            @Override
-            public void res(String res) {
-                onlineAppointment.setImageUrl(res);
-                DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
-                ref.setValue(onlineAppointment);
-                saveOnlineAppointmentForUser(onlineAppointment.getUserId(), onlineAppointment.getOnlineAppointmentId());
-            }
-        });
-
-
+    public void saveOnlineAppointment(OnlineAppointment onlineAppointment, Uri uri, CallBack<Boolean> callback) {
+        // Upload image if URI is provided
+        if (uri != null) {
+            uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
+                @Override
+                public void res(String imageUrl) {
+                    onlineAppointment.setImageUrl(imageUrl);
+                    saveAppointmentToDatabase(onlineAppointment, callback);
+                }
+            });
+        } else {
+            // If no image, just save appointment data
+            onlineAppointment.setImageUrl("");
+            saveAppointmentToDatabase(onlineAppointment, callback);
+        }
     }
+
+    private void saveAppointmentToDatabase(OnlineAppointment onlineAppointment, CallBack<Boolean> callback) {
+        DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
+        ref.setValue(onlineAppointment)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        saveOnlineAppointmentForUser(onlineAppointment.getUserId(), onlineAppointment.getOnlineAppointmentId());
+                        callback.res(true);
+                    } else {
+                        callback.res(false);
+                    }
+                })
+                .addOnFailureListener(e -> callback.res(false));
+    }
+
 
 
     public void getAllOnlineAppointmentsForUser(String userId, ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments for user
@@ -417,3 +433,34 @@ public class FireBaseManager {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -182,6 +182,7 @@ public class AllMessagesToVetFragment extends Fragment {
                 if (success) {
                     Toast.makeText(getContext(), "Response saved successfully", Toast.LENGTH_SHORT).show();
                     // Refresh the list to show only pending appointments
+                    onlineAppointments.get(position).setResponse(responseText);
                     onlineAppointments.get(position).setActive(false);
                     filterAndDisplayAppointments(R.id.Pending_appointments_button);
                 } else {

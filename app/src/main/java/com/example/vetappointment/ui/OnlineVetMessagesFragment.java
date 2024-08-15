@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -100,11 +101,34 @@ public class OnlineVetMessagesFragment extends Fragment {
                 .setTime(time)
                 .setActive(true);
 
-        // Save the online appointment along with the image URI if available
-        fireBaseManager.saveOnlineAppointment(onlineAppointment, imageUri);
+        // Show loading indicator
+        showLoading(true);
 
-        navigateToHome();
+        // Save the online appointment along with the image URI if available
+        fireBaseManager.saveOnlineAppointment(onlineAppointment, imageUri, new FireBaseManager.CallBack<Boolean>() {
+            @Override
+            public void res(Boolean success) {
+                showLoading(false);
+                if (success) {
+                    navigateToHome();
+                } else {
+                    // Show error message
+                    Toast.makeText(getContext(), "Failed to save the appointment. Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+    private void showLoading(boolean show) {
+        if (show) {
+            binding.progressOverlay.setVisibility(View.VISIBLE); // Assuming you have a progressBar in your layout
+            submitButton.setEnabled(false);
+        } else {
+            binding.progressOverlay.setVisibility(View.GONE);
+            submitButton.setEnabled(true);
+        }
+    }
+
 
     private void navigateToHome() { // Navigate to the main activity
         Intent intent = new Intent(getContext(), MainActivity.class);
