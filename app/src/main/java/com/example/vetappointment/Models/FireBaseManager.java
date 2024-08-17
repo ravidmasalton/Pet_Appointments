@@ -171,9 +171,9 @@ public class FireBaseManager {
     }
 
 
-    public void uploadImage(Uri uri, String userUid, CallBack<String> callback) { // Upload image
+    public void uploadImage(Uri uri, String userUid,String onlineAppointmentId ,CallBack<String> callback) { // Upload image
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference imageRef = storageRef.child("USERS").child(userUid + ".jpg");
+        StorageReference imageRef = storageRef.child("USERS").child(userUid).child(onlineAppointmentId+".jpg");
 
         if (uri == null) {
             callback.res("");
@@ -206,7 +206,7 @@ public class FireBaseManager {
     public void saveOnlineAppointment(OnlineAppointment onlineAppointment, Uri uri, CallBack<Boolean> callback) {
         // Upload image if URI is provided
         if (uri != null) {
-            uploadImage(uri, onlineAppointment.getUserId(), new CallBack<String>() {
+            uploadImage(uri, onlineAppointment.getUserId(),onlineAppointment.getOnlineAppointmentId(), new CallBack<String>() {
                 @Override
                 public void res(String imageUrl) {
                     onlineAppointment.setImageUrl(imageUrl);

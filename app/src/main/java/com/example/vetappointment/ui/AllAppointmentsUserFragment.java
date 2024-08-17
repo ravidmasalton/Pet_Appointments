@@ -182,8 +182,11 @@ public class AllAppointmentsUserFragment extends Fragment {
                 if (res) {
                     userAppointments= allAppointments;
                     appointmentAdapter.updateAppointments(allAppointments,appointmentAdapter.getIsPastAppointments());
+                    toggleButtonGroup.check(R.id.future_appointments_button);
+                    filterAndDisplayAppointments(toggleButtonGroup.getCheckedButtonId());
 
                 }
+
             }
         });
 
