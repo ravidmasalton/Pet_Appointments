@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
+    // Add the doctor's office to the database only once when the app is first installed
     private  void addDoctorOffice() {
         VetManager vetManager = new VetManager();
         vetManager.setVetId(UUID.randomUUID().toString())
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
     );
-
+  // Choose authentication providers and create and launch sign-in intent
     private void login() {
 
         // Choose authentication providers
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+        // Handle the result of the sign-in process and update the UI
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         if (result.getResultCode() == RESULT_OK && auth.getCurrentUser()!=null) {
             updateUIWithUserDetails(auth.getCurrentUser());
@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Sign-in cancelled by user.", Toast.LENGTH_SHORT).show();
         }
     }
+    // Update the UI with the user's details
     private void updateUIWithUserDetails(FirebaseUser user) {
         nameEditText.setText(user.getEmail());
         nameEditText.setText(user.getDisplayName());
@@ -206,12 +207,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    // Validate the inputs and save the user's information
     private void attemptSaveUserInformation() {
         if (validateInputs()) {
             saveUserInformation();
         }
     }
+
+    // Validate the inputs and save the user's information to the database
     private boolean validateInputs() {
         if (nameEditText.getText().toString().isEmpty()) {
             nameEditText.setError("Name is required");
@@ -231,6 +234,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    // Save the user's information to the database
     public void saveUserInformation(){
         String name = nameEditText.getText().toString();
         String email =  emailEditText.getText().toString();
@@ -240,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             return;
         }
-
+      //check if exist doctor in the database if not the user will be the doctor and save it to the database
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mDatabase.orderByChild("isDoctor").equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -274,7 +278,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         }
-
+  // Check if the user exists in the database and navigate to the main activity
     private void checkUserExistence(FirebaseUser user) {
 
         DatabaseReference userFromDB = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());

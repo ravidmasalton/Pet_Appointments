@@ -30,8 +30,8 @@
             <!-- Maximize ImageView -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/maximizeImageView"
-                android:layout_width="16dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/maximize_svgrepo_com"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -89,11 +89,11 @@ public class OnlineAppointmentAdapter extends RecyclerView.Adapter<OnlineAppoint
                         showImageZoomDialog(onlineAppointment.getImageUrl());
                     });
                 }
-
+                // Maximize the image view
                 holder.maximizeImageView.setOnClickListener(v -> {
                     showExpandedDialog(onlineAppointment);
                 });
-
+               // Show the response if it is not empty and the appointment is active
                 holder.onlineAppointment_response.setVisibility(
                         onlineAppointment.getResponse().isEmpty() ? View.GONE : View.VISIBLE);
                 holder.onlineAppointment_response.setText("Response: " + onlineAppointment.getResponse());
