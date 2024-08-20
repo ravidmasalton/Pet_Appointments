@@ -202,7 +202,7 @@ public class FireBaseManager {
 
 
     }
-
+    // Save online appointment with image to database
     public void saveOnlineAppointment(OnlineAppointment onlineAppointment, Uri uri, CallBack<Boolean> callback) {
         // Upload image if URI is provided
         if (uri != null) {
@@ -219,7 +219,7 @@ public class FireBaseManager {
             saveAppointmentToDatabase(onlineAppointment, callback);
         }
     }
-
+// Save online appointment to database
     private void saveAppointmentToDatabase(OnlineAppointment onlineAppointment, CallBack<Boolean> callback) {
         DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointment.getOnlineAppointmentId());
         ref.setValue(onlineAppointment)
@@ -235,7 +235,7 @@ public class FireBaseManager {
     }
 
 
-
+        // Get all online appointments for user
     public void getAllOnlineAppointmentsForUser(String userId, ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments for user
         ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
         DatabaseReference ref = databaseReferenceUser.child(userId).child("onlineAppointments");
@@ -276,7 +276,7 @@ public class FireBaseManager {
         });
     }
 
-
+ // Get all online appointments
     public void getAllOnlineAppointments(ListenerGetAllOnlineAppointmentFromDB listener) { // Get all online appointments
         ArrayList<OnlineAppointment> onlineAppointments = new ArrayList<>();
         databaseReferenceOnlineAppointment.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -328,7 +328,7 @@ public class FireBaseManager {
 
 
     }
-
+    //check if user is veterinarian
     public void isVeterinarian(String userId, CallBack<Boolean> callback) { // Check if user is veterinarian
         DatabaseReference ref = databaseReferenceUser.child(userId).child("isDoctor");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -360,6 +360,8 @@ public class FireBaseManager {
             }
         });
     }
+
+    // Update VetManager
     public void updateVetManager(String startTime, String endTime) {
         // Retrieve the current VetManager from the database
         databaseReferenceVetManager.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -395,7 +397,7 @@ public class FireBaseManager {
             }
         });
     }
-
+// Save response to online appointment
     public void saveResponseToOnlineAppointment(String onlineAppointmentId, String response, CallBack<Boolean> callback) { // Save response to online appointment
         DatabaseReference ref = databaseReferenceOnlineAppointment.child(onlineAppointmentId).child("response");
         ref.setValue(response)
